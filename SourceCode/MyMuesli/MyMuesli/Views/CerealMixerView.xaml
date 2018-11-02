@@ -1,0 +1,90 @@
+﻿<Window x:Class="MyMuesli.Views.CerealMixerView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MyMuesli.Views"
+        mc:Ignorable="d"
+        Title="CerealMixerView" ResizeMode="NoResize" Height="1000" Width="1200" WindowStartupLocation="CenterScreen"
+        DataContext="{Binding Cereal, Source={StaticResource ViewModelLocator}}">
+    <Window.Resources>
+        <DataTemplate x:Key="ListTemplate">
+            <Grid Height="100" Width="400" Margin="5,5">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition Height="20" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200" />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Label Grid.Row="0" Grid.Column="1" Content="Price:" />
+                <Label Grid.Row="1" Grid.Column="1" Content="Portion Size" />
+                <Label Grid.Row="0" Grid.Column="0" Content="{Binding Name}" />
+                <Label Grid.Row="0" Grid.Column="2" Content="{Binding Price}" />
+                <Label Grid.Row="1" Grid.Column="2" Content="{Binding Portion}" />
+                <Button Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center"
+                        BorderThickness="0" FontStyle="Oblique" Background="Transparent"
+                        Command="{Binding InformationCommand}" Content="More Information"
+                        Grid.Column="0" />
+                <Button Grid.Row="2" Grid.Column="1" Background="Transparent" BorderThickness="0"
+                        Grid.ColumnSpan="2" HorizontalAlignment="Right" VerticalAlignment="Center"
+                        Content="Add to muesli" Command="{Binding AddCommand}" />
+            </Grid>
+        </DataTemplate>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="125"/>
+            <RowDefinition/>
+            <RowDefinition Height="100"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="700"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="75" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" FontSize="50" VerticalAlignment="Center" FontFamily="Comic Sans MS"
+                   HorizontalAlignment="Left" Content="Just Muesli" />
+            <Label Grid.Row="1" FontSize="30" VerticalAlignment="Center" FontFamily="Comic Sans MS"
+                   HorizontalAlignment="Left" Content="Muesli Mixer" />
+        </Grid>
+
+        <TabControl Margin="20,20" x:Name="contS" Grid.Row="1" Grid.Column="0" ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedTab}">
+            <TabItem Header="{Binding Name}">
+                <TabItem.ContentTemplate>
+                    <DataTemplate>
+                        <ListView ItemsSource="{Binding IngredientsList}" ItemTemplate="{StaticResource ListTemplate}" SelectedItem="{Binding SelectedComponent}"/>
+                    </DataTemplate>
+                </TabItem.ContentTemplate>
+            </TabItem>
+        </TabControl>
+
+        <Border Grid.Row="1" BorderThickness="1" BorderBrush="Black" Grid.Column="1" Margin="20,20" Grid.RowSpan="2">
+            <Grid >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50" />
+                    <RowDefinition/>
+                    <RowDefinition Height="100"/>
+                    <RowDefinition Height="75"/>
+                    <RowDefinition Height="75"/>
+                </Grid.RowDefinitions>
+                <Button Grid.Row="4" Margin="20,5" Content="Save muesli mix" Command="{Binding SaveCommand}" FontSize="20" />
+                <TextBlock Grid.Row="3" VerticalAlignment="Top" TextAlignment="Center" HorizontalAlignment="Right" Width="100" Height="30" Margin="10,10">                                
+                    <Hyperlink Command="{Binding SomeCommand, ElementName=window}" CommandParameter="{Binding}">Details
+                    </Hyperlink>
+                </TextBlock>
+                 
+            </Grid>
+        </Border>
+
+        <Button Height="40" Grid.Row="2" Grid.Column="0"  Width="200" HorizontalAlignment="Left" Margin="20,0" Content="Back to menu" Command="{Binding MenuCommand}" FontSize="20" />
+    </Grid>
+</Window>

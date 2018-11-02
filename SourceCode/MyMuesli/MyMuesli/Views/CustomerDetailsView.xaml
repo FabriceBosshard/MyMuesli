@@ -1,0 +1,78 @@
+﻿<Window x:Class="MyMuesli.Views.CustomerDetailsView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="CustomerDetailsView" ResizeMode="NoResize" Height="600" Width="700" WindowStartupLocation="CenterScreen"
+        DataContext="{Binding Customer, Source={StaticResource ViewModelLocator}}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="125" />
+            <RowDefinition />
+            <RowDefinition Height="100" />
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="75" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" FontSize="50" VerticalAlignment="Center" FontFamily="Comic Sans MS"
+                   HorizontalAlignment="Center" Content="Just Muesli" />
+            <Label Grid.Row="1" FontSize="30" VerticalAlignment="Center" FontFamily="Comic Sans MS"
+                   HorizontalAlignment="Center" Content="Customer Details" />
+        </Grid>
+        <Grid Grid.Row="1" Margin="5,5">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150" />
+                <ColumnDefinition Width="100" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Label Content="Name" Height="50" Width="150" VerticalAlignment="Center" VerticalContentAlignment="Center"
+                   HorizontalContentAlignment="Center" HorizontalAlignment="Center" FontSize="20" />
+            <Label Grid.Row="1" Grid.Column="0" Content="Address" Height="50" Width="150" VerticalAlignment="Center"
+                   VerticalContentAlignment="Center" HorizontalContentAlignment="Center" HorizontalAlignment="Center"
+                   FontSize="20" />
+            <Label Grid.Row="2" Grid.Column="0" Content="Zip / City" Height="50" Width="150" VerticalAlignment="Center"
+                   VerticalContentAlignment="Center" HorizontalContentAlignment="Center" HorizontalAlignment="Center"
+                   FontSize="20" />
+            <Label Grid.Row="3" Grid.Column="0" Content="Country" Height="50" Width="150" VerticalAlignment="Center"
+                   VerticalContentAlignment="Center" HorizontalContentAlignment="Center" HorizontalAlignment="Center"
+                   FontSize="20" />
+            <Label Grid.Row="4" Grid.Column="0" Content="Phone" Height="50" Width="150" VerticalAlignment="Center"
+                   VerticalContentAlignment="Center" HorizontalContentAlignment="Center" HorizontalAlignment="Center"
+                   FontSize="20" />
+            <Label Grid.Row="5" Grid.Column="0" Content="Email" Height="50" Width="150" VerticalAlignment="Center"
+                   VerticalContentAlignment="Center" HorizontalContentAlignment="Center" HorizontalAlignment="Center"
+                   FontSize="20" />
+
+            <TextBox Grid.Row="0" Text="{Binding Name}" Grid.Column="1" Margin="5,5" Grid.ColumnSpan="2" />
+            <TextBox Grid.Row="1" Text="{Binding Address}" Grid.Column="1" Margin="5,5" Grid.ColumnSpan="2" />
+
+            <TextBox Grid.Row="2" Text="{Binding Zip}" Grid.Column="1" Margin="5,5" />
+            <TextBox Grid.Row="2" Text="{Binding City}" Grid.Column="2" Margin="5,5" />
+
+            <ComboBox Grid.Row="3" ItemsSource="{Binding Countries}" SelectedItem="{Binding SelectedCountry}" Grid.Column="1" Margin="2,2" Grid.ColumnSpan="2"
+                      />
+            <TextBox Grid.Row="4" Text="{Binding Phone}" Grid.Column="1" Margin="5,5" Grid.ColumnSpan="2" />
+            <TextBox Grid.Row="5" Text="{Binding Email}" Grid.Column="1" Margin="5,5" Grid.ColumnSpan="2"  />
+        </Grid>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Button Height="40" Width="200" Content="Save" Command="{Binding SaveCommand}" FontSize="20" />
+            <Button Height="40" Grid.Column="1" Command="{Binding MenuCommand}" Width="200" Content="Back to menu"
+                    FontSize="20" />
+        </Grid>
+    </Grid>
+</Window>
