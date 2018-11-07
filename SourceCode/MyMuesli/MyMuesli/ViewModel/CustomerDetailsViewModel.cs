@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Input;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
+using MyMuesli.Helpers;
 using MyMuesli.Model;
 using MyMuesli.Service;
 
@@ -10,38 +11,22 @@ namespace MyMuesli.ViewModel
 {
     public class CustomerDetailsViewModel: ViewModelBase
     {
-        private IDatabaseService _databaseService;
-        private ICustomerDetails _customerDetails;
+        private readonly IDatabaseService _databaseService;
+        private readonly CustomerDetails _customerDetails = new CustomerDetails();
 
-        public CustomerDetailsViewModel(IDatabaseService service, ICustomerDetails customer)
+        public CustomerDetailsViewModel(IDatabaseService service)
         {
             _databaseService = service;
-            _customerDetails = customer;
 
-            Countries = GetCountries();
+            Countries = _databaseService.GetCountries();
 
             SaveCommand = new RelayCommand(SaveUser);
             MenuCommand = new RelayCommand(BackToMenu);
         }
 
-        private ObservableCollection<string> GetCountries()
-        {
-            return _databaseService.GetCountries();
-        }
-
         private bool ValidateCustomer()
-        {
-            var customer = new CustomerDetails()
-            {
-                Name = Name,
-                Address = Address,
-                Zip = Zip,
-                City = City,
-                Country = SelectedCountry,
-                Phone = Phone,
-                Email = Email
-            };
-            if (CustomerValidation.ValidateCustomer(customer))
+        {          
+            if (CustomerValidation.ValidateCustomer(_customerDetails))
             {
                 return true;
             }
@@ -52,7 +37,9 @@ namespace MyMuesli.ViewModel
 
         private void BackToMenu()
         {
-            Application.Current.MainWindow?.Show();
+            var currentView = Application.Current.Windows[0];
+            new MainWindow().Show();
+            currentView?.Close();  
         }
 
         private void SaveUser()
@@ -60,6 +47,7 @@ namespace MyMuesli.ViewModel
             if (ValidateCustomer())
             {
                 _databaseService.AddUser(_customerDetails);
+                ViewModelLocator.Instance.InitCustomer(_customerDetails);
             }
         }
 
@@ -76,10 +64,10 @@ namespace MyMuesli.ViewModel
             }
         }
         public string Address {
-            get { return _customerDetails.Name; }
+            get { return _customerDetails.Address; }
             set
             {
-                _customerDetails.Name = value;
+                _customerDetails.Address = value;
                 RaisePropertyChanged();
             }
         }
@@ -99,24 +87,15 @@ namespace MyMuesli.ViewModel
                 RaisePropertyChanged();
             }
         }
-        public string SelectedCountry {
-            get { return _customerDetails.Country; }
+
+        public ObservableCollection<Country> Countries { get; set; }
+
+        public Country SelectedCountry
+        {
+            get { return _customerDetails.Country;}
             set
             {
                 _customerDetails.Country = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        private ObservableCollection<string> _countries;
-        public ObservableCollection<string> Countries {
-            get
-            {
-                return _countries;
-            }
-            set
-            {
-                _countries = value;
                 RaisePropertyChanged();
             }
         }

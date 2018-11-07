@@ -1,35 +1,137 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using MyMuesli.Model;
 using MyMuesli.ViewModel;
 
 namespace MyMuesli.Service
 {
-    class DatabaseService : IDatabaseService
+    public class DatabaseService : IDatabaseService
     {
-        public void AddUser(ICustomerDetails customer)
+        public void AddUser(CustomerDetails customer)
         {
             
         }
 
-        public ObservableCollection<string> GetCountries()
+        public ObservableCollection<Country> GetCountries()
         {
-            return null;
+            return new ObservableCollection<Country>()
+            {
+                new Country()
+                {
+                    Name = "Swiss"
+                },
+                new Country()
+                {
+                    Name = "sdfasdf"
+                },new Country()
+                {
+                    Name = "belgium"
+                }
+
+            };
         }
 
-        public ObservableCollection<Cereal> GetMyCereals(ICustomerDetails customer)
+        public ObservableCollection<Cereal> GetMyCereals(CustomerDetails customer)
         {
-            return null;
+            return new ObservableCollection<Cereal>()
+            {
+                new Cereal()
+                {
+                    CreatedOn = DateTime.Now,
+                    Customer = customer,
+                    Name =  "FuryMix"
+                },
+                new Cereal()
+                {
+                    CreatedOn = DateTime.Now,
+                    Customer = customer,
+                    Name =  "LameMix"
+                }
+            };
         }
 
-        public List<Ingredient> GetIngredients()
+        public ObservableCollection<Ingredient> GetIngredients()
         {
-            return null;
+            return new ObservableCollection<Ingredient>()
+            {
+                new Ingredient()
+                {
+                    Carbohydrates = 50,
+                    Category = new Category()
+                    {
+                        Name = "Basics"
+                    },
+                    Name = "basic",
+                    Fat =  5,
+                    IngredientDescription = "dfsfdsf",
+                    Portion = 600,
+                    Protein = 20,
+                    Price = 1000
+                },
+                new Ingredient()
+                {
+                    Carbohydrates = 50,
+                    Category = new Category()
+                    {
+                        Name = "Basics"
+                    },
+                    Name = "basic",
+                    Fat =  5,
+                    IngredientDescription = "dfsfdsf",
+                    Portion = 600,
+                    Protein = 20,
+                    Price = 1000
+                },
+                new Ingredient()
+                {
+                    Carbohydrates = 50,
+                    Category = new Category()
+                    {
+                        Name = "Basics"
+                    },
+                    Name = "basic",
+                    Fat =  5,
+                    IngredientDescription = "dfsfdsf",
+                    Portion = 600,
+                    Protein = 20,
+                    Price = 1000
+                },
+            };
         }
 
-        public ObservableCollection<ICustomerDetails> GetCustomers()
+        public ObservableCollection<Category> GetCategories()
         {
-            return null;
+            return new ObservableCollection<Category>()
+            {
+                new Category()
+                {
+                    Name = "Basics"
+                },
+                new Category()
+                {
+                    Name = "Special"
+                },
+                new Category()
+                {
+                    Name = "Fruit"
+                }
+            };
+        }
+
+        public void AddCereal(Cereal cereal, ObservableCollection<Ingredient> selectedIngredientList)
+        {
+           
+        }
+
+        public void DeleteMuesli(Cereal selectedCereal)
+        {
+            
+        }
+
+        public ObservableCollection<Ingredient> GetIngredientList(Cereal cereal)
+        {
+            return new ObservableCollection<Ingredient>();
         }
     }
 }

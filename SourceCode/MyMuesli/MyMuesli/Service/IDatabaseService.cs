@@ -10,10 +10,13 @@ namespace MyMuesli.Service
 {
     public interface IDatabaseService
     {
-        void AddUser(ICustomerDetails customer);
-        ObservableCollection<string> GetCountries();
-        ObservableCollection<Cereal> GetMyCereals(ICustomerDetails _customerDetails);
-        List<Ingredient> GetIngredients();
-        ObservableCollection<ICustomerDetails> GetCustomers();
+        void AddUser(CustomerDetails customer);
+        ObservableCollection<Country> GetCountries();
+        ObservableCollection<Cereal> GetMyCereals(CustomerDetails customerDetails);
+        ObservableCollection<Ingredient> GetIngredients();
+        ObservableCollection<Category> GetCategories();
+        void AddCereal(Cereal cereal, ObservableCollection<Ingredient> selectedIngredientList);
+        void DeleteMuesli(Cereal selectedCereal);
+        ObservableCollection<Ingredient> GetIngredientList(Cereal cereal);
     }
 }

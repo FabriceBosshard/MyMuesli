@@ -5,13 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MyMuesli.Views"
         mc:Ignorable="d"
-        Title="MyCerealMixesView" Height="800" ResizeMode="NoResize" Width="800" WindowStartupLocation="CenterScreen"
+        Title="MyCerealMixesView" Height="500" ResizeMode="NoResize" Width="500" WindowStartupLocation="CenterScreen"
         DataContext="{Binding MyCereal, Source={StaticResource ViewModelLocator}}">
     <Grid Margin="10,10">
         <Grid.RowDefinitions>
             <RowDefinition Height="125"/>
             <RowDefinition/>
-            <RowDefinition Height="100"/>
+            <RowDefinition Height="60"/>
         </Grid.RowDefinitions>
         <Grid>
             <Grid.RowDefinitions>
@@ -23,18 +23,23 @@
             <Label Grid.Row="1" FontSize="30" VerticalAlignment="Center" FontFamily="Comic Sans MS"
                    HorizontalAlignment="Center" Content="My muesli mixes" />
         </Grid>
-        <DataGrid Grid.Row="1" SelectedItem="{Binding SelectedCereal}" ItemsSource="{Binding MyCereals}" HorizontalScrollBarVisibility="Visible"/>
-        <Grid Grid.Row="2">
+        <DataGrid Grid.Row="1" SelectedItem="{Binding SelectedCereal}" AlternationCount="2" ItemsSource="{Binding MyCereals}" HorizontalScrollBarVisibility="Visible">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="175"/>
+                <DataGridTextColumn Header="Price / 600g" Binding="{Binding Price}" Width="175"/>
+                <DataGridTextColumn Header="Created on" Binding="{Binding CreatedOn}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+            <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="400"/>
+                <ColumnDefinition Width="200"/>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Button Height="40" Width="200" Content="Back to menu" Command="{Binding MenuCommand}" FontSize="20" />
-            <Button Height="40" Grid.Column="1" Command="{Binding EditCommand}" Width="150" Content="Edit"
-                    FontSize="20" />
-            <Button Height="40" Grid.Column="2" Command="{Binding DeleteCommand}" Width="150" Content="Delete"
-                    FontSize="20" />
+            <Button Height="40" Width="150" HorizontalAlignment="Left" Content="Back to menu" Command="{Binding MenuCommand}" />
+            <Button Height="40" Grid.Column="1" HorizontalAlignment="Right" Command="{Binding EditCommand}" Width="125" Content="Edit"                    />
+            <Button Height="40" Grid.Column="2" HorizontalAlignment="Right"  Command="{Binding DeleteCommand}" Width="125" Content="Delete" />
         </Grid>
     </Grid>
 </Window>

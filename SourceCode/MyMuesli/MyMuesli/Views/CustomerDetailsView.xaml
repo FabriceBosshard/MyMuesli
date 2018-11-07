@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="CustomerDetailsView" ResizeMode="NoResize" Height="600" Width="700" WindowStartupLocation="CenterScreen"
+        Title="CustomerDetailsView" ResizeMode="NoResize" Height="600" Width="600" WindowStartupLocation="CenterScreen"
         DataContext="{Binding Customer, Source={StaticResource ViewModelLocator}}">
     <Grid>
         <Grid.RowDefinitions>
@@ -60,9 +60,14 @@
             <TextBox Grid.Row="2" Text="{Binding Zip}" Grid.Column="1" Margin="5,5" />
             <TextBox Grid.Row="2" Text="{Binding City}" Grid.Column="2" Margin="5,5" />
 
-            <ComboBox Grid.Row="3" ItemsSource="{Binding Countries}" SelectedItem="{Binding SelectedCountry}" Grid.Column="1" Margin="2,2" Grid.ColumnSpan="2"
-                      />
-            <TextBox Grid.Row="4" Text="{Binding Phone}" Grid.Column="1" Margin="5,5" Grid.ColumnSpan="2" />
+            <ComboBox Grid.Row="3" ItemsSource="{Binding Countries}" SelectedItem="{Binding SelectedCountry}" Grid.Column="1" Margin="5,5" Grid.ColumnSpan="2">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <Label Content="{Binding Name}"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+                    <TextBox Grid.Row="4" Text="{Binding Phone}" Grid.Column="1" Margin="5,5" Grid.ColumnSpan="2" />
             <TextBox Grid.Row="5" Text="{Binding Email}" Grid.Column="1" Margin="5,5" Grid.ColumnSpan="2"  />
         </Grid>
         <Grid Grid.Row="2">

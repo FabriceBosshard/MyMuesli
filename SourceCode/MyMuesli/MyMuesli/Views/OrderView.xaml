@@ -80,8 +80,8 @@
         </Border>
         <DataGrid Grid.Row="1" ItemsSource="{Binding MyCereals}" HorizontalScrollBarVisibility="Visible" Grid.Column="0" Grid.ColumnSpan="2" Margin="20" />
         <Button Grid.Row="2" Margin="20,0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Grid.Column="0" Height="40"
-                Width="200" Content="Back to menu" Command="{Binding SaveCommand}" FontSize="20" />
-        <Button Grid.Column="2" Margin="20" Grid.Row="2" Command="{Binding MenuCommand}" Content="Back to menu"
+                Width="200" Content="Back to menu" Command="{Binding MenuCommand}" FontSize="20" />
+        <Button Grid.Column="2" Margin="20" Grid.Row="2" Command="{Binding SaveCommand}" Content="Submit Order"
                 FontSize="20" />
     </Grid>
 </Window>

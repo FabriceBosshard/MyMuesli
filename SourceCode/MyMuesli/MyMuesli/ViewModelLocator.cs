@@ -16,29 +16,29 @@ namespace MyMuesli
 {
     public class ViewModelLocator
     {
-        private readonly UnityContainer container;
+        public readonly UnityContainer Container;
         public ViewModelLocator()
         {
-            container = new UnityContainer();
+            Container = new UnityContainer();
             RegisterInstances();
            /* ServiceLocator.SetLocatorProvider(()=> SimpleIoc.Default)*/;
         }
 
         private void RegisterInstances()
         {
-            container.RegisterType<IDatabaseService, DatabaseService>(new ContainerControlledLifetimeManager());
+            Container.RegisterType<IDatabaseService, DatabaseService>(new ContainerControlledLifetimeManager());
         }
-        public void InitCustomer(ICustomerDetails selectedCustomer)
+        public void InitCustomer(CustomerDetails selectedCustomer)
         {
-            container.RegisterInstance<ICustomerDetails>(selectedCustomer);
+            var session = new AppSession(selectedCustomer);
+            Container.RegisterInstance<IAppSession>(session);
         }
-        internal static ViewModelLocator Instance => Application.Current.Resources["Locator"] as ViewModelLocator;
+        internal static ViewModelLocator Instance => Application.Current.Resources["ViewModelLocator"] as ViewModelLocator;
 
-        public MainViewModel Main => container.Resolve<MainViewModel>();
-        public CustomerSelectionViewModel Selection => container.Resolve<CustomerSelectionViewModel>();
-        public OrderViewModel Order => container.Resolve<OrderViewModel>();
-        public CerealMixerViewModel Cereal => container.Resolve<CerealMixerViewModel>();
-        public MyCerealMixesViewModel MyCereal => container.Resolve<MyCerealMixesViewModel>();
-        public CustomerDetailsViewModel Customer => container.Resolve<CustomerDetailsViewModel>();
+        public MainViewModel Main => Container.Resolve<MainViewModel>();
+        public OrderViewModel Order => Container.Resolve<OrderViewModel>();
+        public CerealMixerViewModel Cereal => Container.Resolve<CerealMixerViewModel>();
+        public MyCerealMixesViewModel MyCereal => Container.Resolve<MyCerealMixesViewModel>();
+        public CustomerDetailsViewModel Customer => Container.Resolve<CustomerDetailsViewModel>();
     }
 }
