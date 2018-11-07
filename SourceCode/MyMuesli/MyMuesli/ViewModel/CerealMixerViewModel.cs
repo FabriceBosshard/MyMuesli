@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
+using System.Windows.Forms;
 using System.Windows.Input;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
@@ -10,6 +10,8 @@ using MyMuesli.Helpers;
 using MyMuesli.Model;
 using MyMuesli.Service;
 using MyMuesli.Views;
+using Application = System.Windows.Application;
+using MessageBox = System.Windows.MessageBox;
 
 namespace MyMuesli.ViewModel
 {
@@ -17,12 +19,17 @@ namespace MyMuesli.ViewModel
     {
         private const int MaxMuesliPortion = 600;
         private const string VBasic = "Basics";
-        private readonly ObservableCollection<Ingredient> _ingredients;
         private readonly IDatabaseService _databaseService;
+        private readonly ObservableCollection<Ingredient> _ingredients;
         private readonly IAppSession _session;
+        private string _cerealName;
+        private ObservableCollection<IngredientViewModel> _ingredientList;
+
+        private ObservableCollection<IngredientViewModel> _selectedIngredientList =
+            new ObservableCollection<IngredientViewModel>();
+
         private string _totalNValues;
         private string _totalPrice;
-        private string _cerealName;
 
         public CerealMixerViewModel(IDatabaseService databaseService, IAppSession session)
         {
@@ -38,13 +45,16 @@ namespace MyMuesli.ViewModel
             DetailsCommand = new RelayCommand(OpenDetails);
             RemoveCommand = new RelayCommand(RemoveIngredient);
             ChangeIngredientCategoryList("Basics");
+
+            CheckForEditableMuesli();
         }
 
-        public void SetSelectedMuesli(Cereal cereal)
+        private void CheckForEditableMuesli()
         {
-            CerealName = cereal.Name;
-            SelectedIngredientList = _databaseService.GetIngredientList(cereal);
-            CalculateCerealValues();
+            if (_session.EditableCereal != null)
+            {
+                SetSelectedCereal(_session.EditableCereal);
+            }
         }
 
         public ICommand SaveCommand { get; set; }
@@ -64,10 +74,19 @@ namespace MyMuesli.ViewModel
             }
         }
 
-        public Ingredient SelectedIngredient { get; set; }
-        public Ingredient SelectedAddedIngredient { get; set; }
+        public IngredientViewModel SelectedIngredient { get; set; }
+        public IngredientViewModel SelectedAddedIngredient { get; set; }
         public ObservableCollection<Category> Categories { get; set; }
-        public ObservableCollection<Ingredient> IngredientList { get; set; }
+
+        public ObservableCollection<IngredientViewModel> IngredientList
+        {
+            get => _ingredientList;
+            set
+            {
+                _ingredientList = value;
+                RaisePropertyChanged();
+            }
+        }
 
         public string TotalPrice
         {
@@ -78,6 +97,7 @@ namespace MyMuesli.ViewModel
                 RaisePropertyChanged();
             }
         }
+
         public Category SelectedTab
         {
             set => ChangeIngredientCategoryList(value.Name);
@@ -93,20 +113,38 @@ namespace MyMuesli.ViewModel
             }
         }
 
-        public ObservableCollection<Ingredient> SelectedIngredientList { get; set; } = new ObservableCollection<Ingredient>();
+        public ObservableCollection<IngredientViewModel> SelectedIngredientList
+        {
+            get => _selectedIngredientList;
+            set
+            {
+                _selectedIngredientList = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        public void SetSelectedCereal(Cereal cereal)
+        {
+            CerealName = cereal.Name;
+            SelectedIngredientList = new ObservableCollection<IngredientViewModel>(_databaseService
+                .GetIngredientList(cereal).Select(t => new IngredientViewModel(t)));
+            CalculateCerealValues();
+        }
 
         private void OpenDetails()
         {
-            if (SelectedIngredientList!=null)
+            if (SelectedIngredientList != null)
             {
-                var vm = new CerealViewModel(SelectedIngredientList);
-                var view = new  DetailsView(vm);
+                var vm = new CerealViewModel(
+                    new ObservableCollection<IngredientViewModel>(SelectedIngredientList.Select(t => t)));
+                var view = new DetailsView(vm);
                 view.Show();
             }
         }
 
         private void SaveCereal()
         {
+
             if (SelectedIngredientList.Count > 0 && !string.IsNullOrWhiteSpace(CerealName))
             {
                 var cereal = new Cereal
@@ -116,7 +154,17 @@ namespace MyMuesli.ViewModel
                     Name = CerealName,
                     Price = CerealContentCalculator.CalculatePrice(SelectedIngredientList)
                 };
-                _databaseService.AddCereal(cereal, SelectedIngredientList);
+                if (_session.EditableCereal != null)
+                {
+                    _databaseService.UpdateCereal(_session.EditableCereal,cereal,SelectedIngredientList);
+                }
+                else
+                {
+                    _databaseService.AddCereal(cereal, SelectedIngredientList);
+                }
+
+                MessageBox.Show("Muesli Created!", "Info");
+                BackToMenu();
             }
             else
             {
@@ -126,33 +174,44 @@ namespace MyMuesli.ViewModel
 
         public void OpenInformation()
         {
-            var vm = new IngredientViewModel(SelectedIngredient);
-            var iv = new InformationView(vm);
-            iv.Show();
+            if (SelectedIngredient != null)
+            {
+                var vm = new IngredientViewModel(SelectedIngredient.Ingredient);
+                var iv = new InformationView(vm);
+                iv.Show();
+            }
         }
 
         public void RemoveIngredient()
         {
-            SelectedIngredientList.Remove(SelectedAddedIngredient);
+            var dialogResult =
+                MessageBox.Show("Are you sure you want to remove the selected ingredient?", "Warning",MessageBoxButton.OKCancel);
+
+            if (dialogResult == MessageBoxResult.OK)
+            {
+                SelectedIngredientList.Remove(SelectedAddedIngredient);
+                CalculateCerealValues();
+                CalculateBasicComponent();
+            }
         }
 
         public void AddIngredient()
         {
             if (SelectedIngredient != null)
             {
-                if (!BasicHasBeenChosen() && SelectedIngredient.Category.Name.Equals(VBasic))
+                if (!BasicHasBeenChosen() && SelectedIngredient.Ingredient.Category.Name.Equals(VBasic))
                 {
-                    SelectedIngredientList.Add(SelectedIngredient);                   
+                    AddIngredientToList();
                 }
                 else if (BasicHasBeenChosen() && MaxPortionNotReached() && SelectedIngredientList.Count < 12 &&
-                         !SelectedIngredient.Category.Name.Equals(VBasic))
+                         !SelectedIngredient.Ingredient.Category.Name.Equals(VBasic))
                 {
-                    SelectedIngredientList.Add(SelectedIngredient);
+                    AddIngredientToList();
                     CalculateBasicComponent();
                 }
-                else if (BasicHasBeenChosen() && SelectedIngredient.Category.Name.Equals(VBasic))
+                else if (BasicHasBeenChosen() && SelectedIngredient.Ingredient.Category.Name.Equals(VBasic))
                 {
-                    SelectedIngredientList[0] = SelectedIngredient;
+                    SelectedIngredientList[0] = GetIngredientCopy();
                     CalculateBasicComponent();
                 }
                 else
@@ -166,25 +225,49 @@ namespace MyMuesli.ViewModel
             }
         }
 
+        private void AddIngredientToList()
+        {
+            SelectedIngredientList.Add(GetIngredientCopy());
+        }
+
+        private IngredientViewModel GetIngredientCopy()
+        {
+            var a = SelectedIngredient.Ingredient;
+            return new IngredientViewModel(new Ingredient()
+            {
+                Carbohydrates = a.Carbohydrates,
+                Category = a.Category,
+                Fat = a.Fat,
+                Id = a.Id,
+                IngredientDescription = a.IngredientDescription,
+                Name = a.Name,
+                Portion = a.Portion,
+                Price = a.Price,
+                Protein = a.Protein,
+            });
+        }
+
         private bool MaxPortionNotReached()
         {
-            var totalPortionAdded = SelectedIngredientList.Select(t => t.Portion).Sum();
-            return totalPortionAdded + SelectedIngredient.Portion <= MaxMuesliPortion;
+            var totalPortionAdded = SelectedIngredientList.Where(t => !t.Ingredient.Category.Name.Equals(VBasic))
+                .Select(t => t.Ingredient.Portion).Sum();
+            return totalPortionAdded + SelectedIngredient.Ingredient.Portion <= MaxMuesliPortion;
         }
 
         private void CalculateBasicComponent()
         {
-            var totalPortionAdded = SelectedIngredientList.Where(i=> !i.Category.Name.Equals(VBasic)).Select(t => t.Portion).Sum();
+            var totalPortionAdded = SelectedIngredientList.Where(i => !i.Ingredient.Category.Name.Equals(VBasic))
+                .Select(t => t.Ingredient.Portion).Sum();
             var difference = MaxMuesliPortion - totalPortionAdded;
-            
+
             SelectedIngredientList[0].Price = CalculatePrice(difference);
             SelectedIngredientList[0].Portion = difference;
         }
 
-        private decimal CalculatePrice(int difference)
+        private double CalculatePrice(int difference)
         {
-            var before = SelectedIngredientList[0].Price;
-            return before / SelectedIngredientList[0].Portion * difference;
+            var before = SelectedIngredientList[0].Ingredient.Price;
+            return before / SelectedIngredientList[0].Ingredient.Portion * difference;
         }
 
         private void CalculateCerealValues()
@@ -195,23 +278,24 @@ namespace MyMuesli.ViewModel
 
         private string CalculateTot()
         {
-            var total = SelectedIngredientList.Select(t => t.Price).Sum();
+            var total = SelectedIngredientList.Select(t => t.Ingredient.Price).Sum();
             return Math.Round(total, 2) + " CHF / 600g";
         }
 
         private bool BasicHasBeenChosen()
         {
-            return SelectedIngredientList.Any(i => i.Category.Name.Equals("Basics"));
+            return SelectedIngredientList.Any(i => i.Ingredient.Category.Name.Equals("Basics"));
         }
 
         private void ChangeIngredientCategoryList(string value)
         {
             if (_ingredients != null)
                 IngredientList =
-                    new ObservableCollection<Ingredient>(_ingredients.Where(i => i.Category.Name.Equals(value)));
+                    new ObservableCollection<IngredientViewModel>(_ingredients.Where(i => i.Category.Name.Equals(value))
+                        .Select(t => new IngredientViewModel(t)));
         }
 
-        private static void BackToMenu()
+        private void BackToMenu()
         {
             var currentView = Application.Current.Windows[0];
             new MainWindow().Show();

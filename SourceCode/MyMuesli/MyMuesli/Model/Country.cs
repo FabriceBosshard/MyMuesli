@@ -1,4 +1,4 @@
-﻿namespace MyMuesli.ViewModel
+﻿namespace MyMuesli.Model
 {
     public class Country
     {

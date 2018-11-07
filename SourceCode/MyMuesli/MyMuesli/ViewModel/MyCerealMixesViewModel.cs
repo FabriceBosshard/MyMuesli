@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.ServiceModel.Channels;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using MyMuesli.Model;
 using MyMuesli.Service;
@@ -30,9 +30,10 @@ namespace MyMuesli.ViewModel
             EditCommand = new RelayCommand(EditCereal);
         }
 
-        private static ObservableCollection<CerealViewModel> CreateViewModelFromCereal(IEnumerable<Cereal> getMyCereals)
+        private static ObservableCollection<MyCerealViewModel> CreateViewModelFromCereal(
+            IEnumerable<Cereal> getMyCereals)
         {
-            return new ObservableCollection<CerealViewModel>(getMyCereals.Select(c => new CerealViewModel(c)));
+            return new ObservableCollection<MyCerealViewModel>(getMyCereals.Select(c => new MyCerealViewModel(c)));
         }
 
         private void EditCereal()
@@ -40,27 +41,31 @@ namespace MyMuesli.ViewModel
             if (SelectedCereal != null)
             {
                 var currentView = Application.Current.Windows[0];
-                _vm.SetSelectedMuesli(SelectedCereal.Cereal);
+                _session.EditableCereal = SelectedCereal.Cereal;
                 new CerealMixerView().Show();
                 currentView?.Close();
             }
             else
             {
-                MessageBox.Show("Please select a Muesli","Warn");
+                MessageBox.Show("Please select a Muesli", "Warn");
             }
         }
-
-        private readonly CerealMixerViewModel _vm = ViewModelLocator.Instance.Container.Resolve<CerealMixerViewModel>();
 
         private void Delete()
         {
             if (SelectedCereal != null)
             {
-                _databaseService.DeleteMuesli(SelectedCereal.Cereal);
+                var result = MessageBox.Show("Are you sure you want to delete the selected Muesli?", "Warning",
+                    MessageBoxButton.OKCancel);
+
+                if (result== MessageBoxResult.OK)
+                {
+                    _databaseService.DeleteMuesli(SelectedCereal.Cereal);
+                }
             }
             else
             {
-                MessageBox.Show("Please select a Muesli","Warn");
+                MessageBox.Show("Please select a Muesli", "Warn");
             }
         }
 
@@ -75,8 +80,22 @@ namespace MyMuesli.ViewModel
         public ICommand DeleteCommand { get; set; }
         public ICommand MenuCommand { get; set; }
 
-        public CerealViewModel SelectedCereal { get; set; }
+        public MyCerealViewModel SelectedCereal { get; set; }
 
-        public ObservableCollection<CerealViewModel> MyCereals { get; }
+        public ObservableCollection<MyCerealViewModel> MyCereals { get; }
+    }
+
+    public class MyCerealViewModel : ViewModelBase
+    {
+        public readonly Cereal Cereal;
+
+        public MyCerealViewModel(Cereal c)
+        {
+            Cereal = c;
+        }
+
+        public string Name => Cereal.Name;
+        public string Price => "CHF " + Cereal.Price;
+        public string CreatedOn => Cereal.CreatedOn.ToString("dd.MM.yyyy");
     }
 }

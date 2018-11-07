@@ -6,32 +6,32 @@ namespace MyMuesli.Helpers
 {
     public static class CerealContentCalculator
     {
-        public static string CalculateCalsMultiple(ObservableCollection<Ingredient> selectedIngredientList)
+        public static string CalculateCalsMultiple(ObservableCollection<IngredientViewModel> selectedIngredientList)
         {
             var total = selectedIngredientList.Select(CalculateCalories).Sum();
             return total + " Kcal / 100g";
         }
 
-        public static decimal CalculatePrice(ObservableCollection<Ingredient> selectedIngredientList)
+        public static double CalculatePrice(ObservableCollection<IngredientViewModel> selectedIngredientList)
         {
-            return selectedIngredientList.Select(t=> t.Price).Sum();
+            return selectedIngredientList.Select(t=> t.Ingredient.Price).Sum();
         }
 
-        public static string CalculateCalsAndJouleForMultiple(ObservableCollection<Ingredient> selectedIngredientList)
+        public static string CalculateCalsAndJouleForMultiple(ObservableCollection<IngredientViewModel> selectedIngredientList)
         {
             var total = selectedIngredientList.Select(CalculateCalories).Sum();
             var joule = total * CalsToJouleExp;
             return total + " Kcal / " + joule + " KJ";
         }
 
-        private static double CalculateCalories(Ingredient ingredient)
+        private static double CalculateCalories(IngredientViewModel ingredient)
         {
-            return (ingredient.Carbohydrates*4.1 + ingredient.Fat*9.3 + ingredient.Protein*4.1) / 100 * ingredient.Portion;
+            return (ingredient.Ingredient.Carbohydrates*4.1 + ingredient.Ingredient.Fat*9.3 + ingredient.Ingredient.Protein*4.1) / 100 * ingredient.Ingredient.Portion;
         }
 
         private const double CalsToJouleExp = 4.184;
 
-        public static string CalculateCalsAndJoule(Ingredient ingredient)
+        public static string CalculateCalsAndJoule(IngredientViewModel ingredient)
         {
             var cals = CalculateCalories(ingredient);
 

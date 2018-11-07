@@ -1,33 +1,65 @@
-﻿using GalaSoft.MvvmLight;
+﻿using System;
+using GalaSoft.MvvmLight;
 using MyMuesli.Helpers;
+using MyMuesli.Model;
 
 namespace MyMuesli.ViewModel
 {
-    public class IngredientViewModel:ViewModelBase
+    public class IngredientViewModel : ViewModelBase
     {
         private string _energyContent;
-        private string _protein;
-        private string _fat;
-        private string _carbohydrates;
+        public Ingredient Ingredient;
 
         public IngredientViewModel(Ingredient selectedIngredient)
         {
-            EnergyContent = CalculateEnergyContent(selectedIngredient);
-            Protein = selectedIngredient.Protein + " g";
-            Fat = selectedIngredient.Fat + " g";
-            Carbohydrates = selectedIngredient.Carbohydrates + " g";
-            Name = selectedIngredient.Name;
-            IngredientDescription = selectedIngredient.IngredientDescription;
+            Ingredient = selectedIngredient;
+            EnergyContent = CalculateEnergyContent();
         }
 
-        private string CalculateEnergyContent(Ingredient selectedIngredient)
+        private string CalculateEnergyContent()
         {
-            return CerealContentCalculator.CalculateCalsAndJoule(selectedIngredient);            
+            return CerealContentCalculator.CalculateCalsAndJoule(this);
         }
 
-        public string Name { get; set; }
+        public string Name
+        {
+            get => Ingredient.Name;
+            set
+            {
+                Ingredient.Name = value;
+                RaisePropertyChanged();
+            }
+        }
 
-        public string IngredientDescription { get; set; }
+        public int Portion
+        {
+            get => Ingredient.Portion;
+            set
+            {
+                Ingredient.Portion = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        public double Price
+        {
+            get => Ingredient.Price;
+            set
+            {
+                Ingredient.Price = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        public string IngredientDescription
+        {
+            get => Ingredient.IngredientDescription;
+            set
+            {
+                Ingredient.IngredientDescription = value;
+                RaisePropertyChanged();
+            }
+        }
 
         public string EnergyContent
         {
@@ -39,32 +71,32 @@ namespace MyMuesli.ViewModel
             }
         }
 
-        public string Protein
+        public int Protein
         {
-            get => _protein;
+            get => Ingredient.Protein;
             set
             {
-                _protein = value;
+                Ingredient.Protein = value;
                 RaisePropertyChanged();
             }
         }
 
-        public string Fat
+        public int Fat
         {
-            get => _fat;
+            get => Ingredient.Fat;
             set
             {
-                _fat = value;
+                Ingredient.Fat = value;
                 RaisePropertyChanged();
             }
         }
 
-        public string Carbohydrates
+        public int Carbohydrates
         {
-            get => _carbohydrates;
+            get => Ingredient.Carbohydrates;
             set
             {
-                _carbohydrates = value;
+                Ingredient.Carbohydrates = value;
                 RaisePropertyChanged();
             }
         }

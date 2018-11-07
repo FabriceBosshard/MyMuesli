@@ -48,6 +48,8 @@ namespace MyMuesli.ViewModel
             {
                 _databaseService.AddUser(_customerDetails);
                 ViewModelLocator.Instance.InitCustomer(_customerDetails);
+                MessageBox.Show("Customer has been saved!","info");
+                BackToMenu();
             }
         }
 
@@ -56,7 +58,7 @@ namespace MyMuesli.ViewModel
 
         public string Name
         {
-            get { return _customerDetails.Name; }
+            get => _customerDetails.Name;
             set
             {
                 _customerDetails.Name = value;
@@ -64,7 +66,7 @@ namespace MyMuesli.ViewModel
             }
         }
         public string Address {
-            get { return _customerDetails.Address; }
+            get => _customerDetails.Address;
             set
             {
                 _customerDetails.Address = value;
@@ -72,7 +74,7 @@ namespace MyMuesli.ViewModel
             }
         }
         public string Zip {
-            get { return _customerDetails.Zip; }
+            get => _customerDetails.Zip;
             set
             {
                 _customerDetails.Zip = value;
@@ -80,7 +82,7 @@ namespace MyMuesli.ViewModel
             }
         }
         public string City {
-            get { return _customerDetails.City; }
+            get => _customerDetails.City;
             set
             {
                 _customerDetails.City = value;
@@ -92,7 +94,7 @@ namespace MyMuesli.ViewModel
 
         public Country SelectedCountry
         {
-            get { return _customerDetails.Country;}
+            get => _customerDetails.Country;
             set
             {
                 _customerDetails.Country = value;
@@ -102,7 +104,7 @@ namespace MyMuesli.ViewModel
 
         public string Phone
         {
-            get { return _customerDetails.Phone; }
+            get => _customerDetails.Phone;
             set
             {
                 _customerDetails.Phone = value;
@@ -111,7 +113,7 @@ namespace MyMuesli.ViewModel
         }
 
         public string Email {
-            get { return _customerDetails.Email; }
+            get => _customerDetails.Email;
             set
             {
                 _customerDetails.Email = value;

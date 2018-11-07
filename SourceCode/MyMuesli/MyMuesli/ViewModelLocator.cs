@@ -5,8 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using GalaSoft.MvvmLight.Ioc;
-using Microsoft.Practices.ServiceLocation;
 using MyMuesli.Model;
 using MyMuesli.Service;
 using MyMuesli.ViewModel;

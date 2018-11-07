@@ -88,12 +88,12 @@ namespace MyMuesli.Service
                     Carbohydrates = 50,
                     Category = new Category()
                     {
-                        Name = "Basics"
+                        Name = "Fruit"
                     },
-                    Name = "basic",
+                    Name = "Fruit",
                     Fat =  5,
                     IngredientDescription = "dfsfdsf",
-                    Portion = 600,
+                    Portion = 70,
                     Protein = 20,
                     Price = 1000
                 },
@@ -119,9 +119,9 @@ namespace MyMuesli.Service
             };
         }
 
-        public void AddCereal(Cereal cereal, ObservableCollection<Ingredient> selectedIngredientList)
+        public void AddCereal(Cereal cereal, ObservableCollection<IngredientViewModel> selectedIngredientList)
         {
-           
+            
         }
 
         public void DeleteMuesli(Cereal selectedCereal)
@@ -132,6 +132,10 @@ namespace MyMuesli.Service
         public ObservableCollection<Ingredient> GetIngredientList(Cereal cereal)
         {
             return new ObservableCollection<Ingredient>();
+        }
+
+        public void UpdateCereal(Cereal OldCereal, Cereal cereal, ObservableCollection<IngredientViewModel> selectedIngredientList)
+        {
         }
     }
 }

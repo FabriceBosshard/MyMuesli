@@ -10,5 +10,6 @@ namespace MyMuesli.Service
         }
 
         public CustomerDetails Customer { get; set; }
+        public Cereal EditableCereal { get; set; }
     }
 }

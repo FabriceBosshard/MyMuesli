@@ -14,17 +14,48 @@ namespace MyMuesli.ViewModel
     {
         private bool _isCustomerCreated;
         private bool _isMuesliCreated;
+        private readonly IDatabaseService databaseService;
 
-        public MainViewModel()
+        public bool IsMuesliCreated
         {
+            get => _isMuesliCreated;
+            set
+            {
+                _isMuesliCreated = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        public MainViewModel(IDatabaseService databaseService)
+        {
+            this.databaseService = databaseService;
             ExitCommand = new RelayCommand(() => Environment.Exit(0));
             CustomerDetailsCommand = new RelayCommand(OpenCustomerDetails);
             CerealMixerCommand = new RelayCommand(OpenCerealMixer);
             MyCerealCommand = new RelayCommand(OpenMyCereals);
             OrderCommand = new RelayCommand(OpenOrders);
 
-            ViewModelLocator.Instance.InitCustomer(new CustomerDetails());
             IsCustomerCreated = CheckForCustomer();
+            IsMuesliCreated = CheckForMuesli();
+
+        }
+
+        private bool CheckForMuesli()
+        {
+            try
+            {
+                var session = ViewModelLocator.Instance.Container.Resolve<IAppSession>();
+                if (session.Customer != null)
+                {
+                    return databaseService.GetMyCereals(session.Customer).Count > 0;
+                }
+            }
+            catch
+            {
+                //Log.Warn("No Customer created")
+            }
+
+            return false;
         }
 
         private bool CheckForCustomer()

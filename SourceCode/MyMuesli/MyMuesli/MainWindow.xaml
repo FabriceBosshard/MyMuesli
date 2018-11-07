@@ -18,8 +18,8 @@
         <Label Grid.Row="0" FontSize="50" VerticalAlignment="Center" FontFamily="Comic Sans MS" HorizontalAlignment="Center" Content="Just Muesli"/>
         <Button Grid.Row="1" Command="{Binding CustomerDetailsCommand}" Height="30" Width="200" Content="Edit Customer Details"/>
         <Button Grid.Row="2" Command="{Binding CerealMixerCommand}" IsEnabled="{Binding IsCustomerCreated}" Height="30" Width="200" Content="Muesli Mixer"/>
-        <Button Grid.Row="3" Command="{Binding MyCerealCommand}" Height="30" Width="200" IsEnabled="{Binding IsCustomerCreated}" Content="My muesli mixes"/>
-        <Button Grid.Row="4" Command="{Binding OrderCommand}" Height="30" Width="200" IsEnabled="{Binding IsCustomerCreated}" Content="OrderView"/>
+        <Button Grid.Row="3" Command="{Binding MyCerealCommand}" Height="30" Width="200" IsEnabled="{Binding IsMuesliCreated}" Content="My muesli mixes"/>
+        <Button Grid.Row="4" Command="{Binding OrderCommand}" Height="30" Width="200" IsEnabled="{Binding IsMuesliCreated}" Content="OrderView"/>
         <Button Grid.Row="5" Command="{Binding ExitCommand}" Height="30" Width="200" Content="Exit"/>
     </Grid>
 </Window>

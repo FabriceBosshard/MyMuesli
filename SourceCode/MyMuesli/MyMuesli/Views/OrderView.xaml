@@ -32,7 +32,7 @@
                    HorizontalAlignment="Center" Content="Order" />
         </Grid>
         <Border Grid.Row="1" Margin="20,20" Grid.Column="2" BorderBrush="Black" BorderThickness="1">
-            <Grid >
+            <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition />
                     <RowDefinition />
@@ -64,21 +64,22 @@
                        HorizontalAlignment="Center"
                        FontSize="20" />
                 <Border Grid.Row="0" Grid.Column="1" Height="50" Margin="5,5" BorderBrush="Black" BorderThickness="1">
-                    <TextBlock Text="{Binding MuesliMixesValues}"  />
+                    <TextBlock Text="{Binding MuesliMixesValues,StringFormat='CHF \{0\}'}" />
                 </Border>
                 <Border Grid.Row="1" Margin="5,5" Grid.Column="1" Height="50" BorderBrush="Black" BorderThickness="1">
-                    <TextBlock  Text="{Binding ShippingPrice}"   />
+                    <TextBlock Text="{Binding ShippingPrice,StringFormat='CHF \{0\}'}" />
                 </Border>
                 <Border Grid.Row="2" Grid.Column="1" Margin="5,5" Height="50" BorderBrush="Black" BorderThickness="1">
-                    <TextBlock  Text="{Binding TaxesValue}"   />
+                    <TextBlock Text="{Binding TaxesValue,StringFormat='CHF \{0\}'}" />
                 </Border>
                 <Border Grid.Row="3" Grid.Column="1" Margin="5,5" Height="50" BorderBrush="Black" BorderThickness="1">
-                    <TextBlock Text="{Binding GrandTotal}"   />
+                    <TextBlock Text="{Binding GrandTotal,StringFormat='CHF \{0\}'}" />
                 </Border>
             </Grid>
 
         </Border>
-        <DataGrid Grid.Row="1" ItemsSource="{Binding MyCereals}" HorizontalScrollBarVisibility="Visible" Grid.Column="0" Grid.ColumnSpan="2" Margin="20" />
+        <DataGrid Grid.Row="1" ItemsSource="{Binding MyCereals}" HorizontalScrollBarVisibility="Visible"
+                  Grid.Column="0" Grid.ColumnSpan="2" Margin="20" />
         <Button Grid.Row="2" Margin="20,0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Grid.Column="0" Height="40"
                 Width="200" Content="Back to menu" Command="{Binding MenuCommand}" FontSize="20" />
         <Button Grid.Column="2" Margin="20" Grid.Row="2" Command="{Binding SaveCommand}" Content="Submit Order"

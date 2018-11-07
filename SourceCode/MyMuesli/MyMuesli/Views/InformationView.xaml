@@ -14,7 +14,7 @@
             <RowDefinition Height="150"/>
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
-        <Label Grid.Row="0" Content="{Binding Name}" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="30"/>
+        <Label Grid.Row="0" Height="50" VerticalAlignment="Center" HorizontalAlignment="Left" Width="200" Content="{Binding Name}" FontSize="26"/>
         <Label Grid.Row="1" Content="Ingredients" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="16"/>
         <Border Grid.Row="2" BorderBrush="Black" BorderThickness="1">
             <TextBlock Text="{Binding IngredientDescription}"/>
@@ -37,10 +37,10 @@
                 <Label Content="Carbohydrates" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="16"/>
                 <Label Content="Fat" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="16"/>
 
-                <Label Content="{Binding EnergyContent}" Grid.Row="0" Grid.Column="1"  HorizontalAlignment="Right" VerticalAlignment="Center" FontFamily="16"/>
-                <Label Content="{Binding Protein}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" FontFamily="16"/>
-                <Label Content="{Binding Carbohydrates}" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" FontFamily="16"/>
-                <Label Content="{Binding Fat}" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" FontFamily="16"/>
+                <TextBlock Text="{Binding EnergyContent}" Grid.Row="0" Grid.Column="1"  HorizontalAlignment="Right" VerticalAlignment="Center" FontFamily="16"/>
+                <TextBlock Text="{Binding Protein , StringFormat='\{0\} g'}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" FontFamily="16"/>
+                <TextBlock Text="{Binding Carbohydrates, StringFormat='\{0\} g'}" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" FontFamily="16"/>
+                <TextBlock Text="{Binding Fat, StringFormat='\{0\} g'}" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" FontFamily="16"/>
             </Grid>
         </Border>
         <Button Grid.Row="5" Content="Back" Click="Close" HorizontalAlignment="Right" Width="100" VerticalAlignment="Center"/>

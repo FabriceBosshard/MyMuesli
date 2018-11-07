@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         mc:Ignorable="d"
         Title="CerealMixerView" ResizeMode="NoResize" Height="800" Width="800" WindowStartupLocation="CenterScreen"
         DataContext="{Binding Cereal, Source={StaticResource ViewModelLocator}}">
@@ -14,8 +15,9 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <Border BorderThickness="1" BorderBrush="Black">
-                    <TextBlock HorizontalAlignment="Center" FontSize="16" Background="DimGray" 
-                               Text="{Binding Portion}" TextAlignment="Center" Width="100" />
+                    <TextBlock HorizontalAlignment="Center" FontSize="12" Background="DimGray" 
+                               Text="{Binding Portion, StringFormat='\{0\} g'}" TextAlignment="Center" Width="100">
+                    </TextBlock>
                 </Border>
                 <TextBlock HorizontalAlignment="Left" Grid.Column="1"  FontSize="16" Margin="5,0"  VerticalAlignment="Center" Text="{Binding Name, FallbackValue='(Empty)'}" />
             </Grid>
@@ -34,9 +36,9 @@
                 </Grid.ColumnDefinitions>
                 <Label Grid.Row="0" Grid.Column="1" Content="Price:" />
                 <Label Grid.Row="1" Grid.Column="1" Content="Portion Size" />
-                <Label Grid.Row="0" Grid.Column="0" Content="{Binding Name}" />
-                <Label Grid.Row="0" Grid.Column="2" Content="{Binding Price}" />
-                <Label Grid.Row="1" Grid.Column="2" Content="{Binding Portion}" />
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Name}" />
+                <TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding Price, StringFormat='CHF \{0\}'}" />
+                <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding Portion, StringFormat='\{0\} g'}" />
                 <Button Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center"
                         BorderThickness="0" FontStyle="Oblique" Background="Transparent"
                         Command="{Binding RelativeSource={RelativeSource FindAncestor, 
@@ -107,7 +109,7 @@
                     </Grid.ColumnDefinitions>
                     <Label Content="Name" FontSize="16" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"
                            HorizontalAlignment="Center" />
-                    <TextBox Grid.Column="1" FontSize="16" HorizontalAlignment="Center" Width="175"
+                    <TextBox Grid.Column="1" FontSize="16" HorizontalAlignment="Center" Width="160"
                              Text="{Binding CerealName}" VerticalAlignment="Center" />
                 </Grid>
                 <ListView Margin="10,10" Grid.Row="1" SelectedItem="{Binding SelectedAddedIngredient}">
@@ -153,9 +155,9 @@
                            FontSize="12" Content="Price:" />
                     <Label HorizontalAlignment="Left" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center"
                            FontSize="12" Content="Nutritional values:" />
-                    <TextBlock HorizontalAlignment="Left" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center"
-                               FontSize="12" Text="{Binding TotalPrice}" />
-                    <TextBlock HorizontalAlignment="Left" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center"
+                    <TextBlock HorizontalAlignment="Right" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center"
+                               FontSize="12" Text="{Binding TotalPrice,StringFormat='#.##'}" />
+                    <TextBlock HorizontalAlignment="Right" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center"
                                FontSize="12" Text="{Binding TotalNValues}" />
                 </Grid>
                 <Button Grid.Row="3" VerticalAlignment="Top" Content="Details" Command="{Binding DetailsCommand}"
