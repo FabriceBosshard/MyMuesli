@@ -19,7 +19,6 @@ namespace MyMuesli
         {
             Container = new UnityContainer();
             RegisterInstances();
-           /* ServiceLocator.SetLocatorProvider(()=> SimpleIoc.Default)*/;
         }
 
         private void RegisterInstances()
@@ -32,7 +31,6 @@ namespace MyMuesli
             Container.RegisterInstance<IAppSession>(session);
         }
         internal static ViewModelLocator Instance => Application.Current.Resources["ViewModelLocator"] as ViewModelLocator;
-
         public MainViewModel Main => Container.Resolve<MainViewModel>();
         public OrderViewModel Order => Container.Resolve<OrderViewModel>();
         public CerealMixerViewModel Cereal => Container.Resolve<CerealMixerViewModel>();

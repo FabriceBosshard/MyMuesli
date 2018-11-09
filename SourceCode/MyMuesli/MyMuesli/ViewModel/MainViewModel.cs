@@ -1,8 +1,12 @@
 ﻿using System;
+using System.IO;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Input;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using log4net;
+using log4net.Config;
 using MyMuesli.Model;
 using MyMuesli.Service;
 using MyMuesli.Views;
@@ -15,6 +19,7 @@ namespace MyMuesli.ViewModel
         private bool _isCustomerCreated;
         private bool _isMuesliCreated;
         private readonly IDatabaseService databaseService;
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public bool IsMuesliCreated
         {
@@ -28,6 +33,8 @@ namespace MyMuesli.ViewModel
 
         public MainViewModel(IDatabaseService databaseService)
         {
+            XmlConfigurator.Configure(new FileInfo("Logger\\log4net.config"));
+
             this.databaseService = databaseService;
             ExitCommand = new RelayCommand(() => Environment.Exit(0));
             CustomerDetailsCommand = new RelayCommand(OpenCustomerDetails);
@@ -36,8 +43,7 @@ namespace MyMuesli.ViewModel
             OrderCommand = new RelayCommand(OpenOrders);
 
             IsCustomerCreated = CheckForCustomer();
-            IsMuesliCreated = CheckForMuesli();
-
+            IsMuesliCreated = CheckForMuesli();           
         }
 
         private bool CheckForMuesli()
@@ -52,7 +58,7 @@ namespace MyMuesli.ViewModel
             }
             catch
             {
-                //Log.Warn("No Customer created")
+                Log.Warn("No Muesli created");
             }
 
             return false;
@@ -70,7 +76,7 @@ namespace MyMuesli.ViewModel
             }
             catch
             {
-                //Log.Warn("No Customer created")
+                Log.Warn("No Customer created");
             }
             return false;
         }

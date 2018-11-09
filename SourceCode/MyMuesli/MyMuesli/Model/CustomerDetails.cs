@@ -1,4 +1,5 @@
-﻿using MyMuesli.ViewModel;
+﻿using System.Collections.Generic;
+using MyMuesli.ViewModel;
 
 namespace MyMuesli.Model
 {
@@ -12,5 +13,6 @@ namespace MyMuesli.Model
         public Country Country { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
+        public virtual ICollection<Cereal> Cereals { get; set; }
     }
 }

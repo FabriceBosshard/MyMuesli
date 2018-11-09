@@ -87,6 +87,7 @@
     </ApplicationDefinition>
     <Compile Include="Model\CustomerDetails.cs" />
     <Compile Include="Service\DatabaseService.cs" />
+    <Compile Include="Service\MyCerealContext.cs" />
     <Compile Include="Service\IDatabaseService.cs" />
     <Compile Include="ViewModelLocator.cs" />
     <Compile Include="Model\Cereal.cs" />
@@ -180,6 +181,7 @@
     <Content Include="Logger\log4net.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="ClassDiagram3.cd" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
