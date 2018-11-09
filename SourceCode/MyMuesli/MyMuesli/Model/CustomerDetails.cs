@@ -1,10 +1,16 @@
-﻿using MyMuesli.ViewModel;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using MyMuesli.ViewModel;
 
 namespace MyMuesli.Model
 {
     public class CustomerDetails
     {
-        public string ID { get; set; }
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public Guid ID { get; set; }
         public string Name { get; set; }
         public string Address { get; set; }
         public string City { get; set; }
@@ -12,5 +18,6 @@ namespace MyMuesli.Model
         public Country Country { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
+        public virtual ICollection<Cereal> Cereals { get; set; }
     }
 }

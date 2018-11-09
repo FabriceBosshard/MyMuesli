@@ -8,6 +8,23 @@
         Title="OrderView" Height="700" Width="1200" ResizeMode="NoResize" WindowStartupLocation="CenterScreen"
         DataContext="{Binding Order, Source={StaticResource ViewModelLocator}}">
     <Window.Resources>
+        <DataTemplate x:Key="HeaderNumberBox">
+            <Grid Margin="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="20" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock TextAlignment="Right"
+                         Grid.Column="0" Text="{Binding}" />
+                <StackPanel Orientation="Vertical"
+                            Grid.Column="1"
+                            VerticalAlignment="Center">
+                    <Button  Height="5" Width="10" Command="{Binding IncreaseCommand}"/>
+                    <Button Height="5"  Width="10" Command="{Binding DecreaseCommand}"/>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -64,25 +81,39 @@
                        HorizontalAlignment="Center"
                        FontSize="20" />
                 <Border Grid.Row="0" Grid.Column="1" Height="50" Margin="5,5" BorderBrush="Black" BorderThickness="1">
-                    <TextBlock Text="{Binding MuesliMixesValues,StringFormat='CHF \{0\}'}" />
+                    <TextBlock Text="{Binding MuesliMixesValues,StringFormat='CHF \{0\}'}" FontSize="16" />
                 </Border>
                 <Border Grid.Row="1" Margin="5,5" Grid.Column="1" Height="50" BorderBrush="Black" BorderThickness="1">
-                    <TextBlock Text="{Binding ShippingPrice,StringFormat='CHF \{0\}'}" />
+                    <TextBlock Text="{Binding ShippingPrice,StringFormat='CHF \{0\}'}" FontSize="16" />
                 </Border>
                 <Border Grid.Row="2" Grid.Column="1" Margin="5,5" Height="50" BorderBrush="Black" BorderThickness="1">
-                    <TextBlock Text="{Binding TaxesValue,StringFormat='CHF \{0\}'}" />
+                    <TextBlock Text="{Binding TaxesValue,StringFormat='CHF \{0\}'}" FontSize="16" />
                 </Border>
                 <Border Grid.Row="3" Grid.Column="1" Margin="5,5" Height="50" BorderBrush="Black" BorderThickness="1">
-                    <TextBlock Text="{Binding GrandTotal,StringFormat='CHF \{0\}'}" />
+                    <TextBlock Text="{Binding GrandTotal,StringFormat='CHF \{0\}'}" FontSize="16" />
                 </Border>
             </Grid>
 
         </Border>
-        <DataGrid Grid.Row="1" ItemsSource="{Binding MyCereals}" HorizontalScrollBarVisibility="Visible"
-                  Grid.Column="0" Grid.ColumnSpan="2" Margin="20" />
-        <Button Grid.Row="2" Margin="20,0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Grid.Column="0" Height="40"
+        <DataGrid Grid.Row="1" ItemsSource="{Binding MyCereals}" AutoGenerateColumns="False"
+                  HorizontalScrollBarVisibility="Visible"
+                  Grid.Column="0" Grid.ColumnSpan="2" Margin="20">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Name" Binding="{Binding Name}" FontSize="16" Width="250" />
+                <DataGridTextColumn Header="Size" Binding="{Binding IsXXl}" FontSize="16" Width="120" />
+                <DataGridTextColumn Header="Price" Binding="{Binding Price, StringFormat='CHF \{0\}'}" FontSize="16"
+                                    Width="120" />
+                <DataGridTextColumn Header="Quantity" HeaderTemplate="{StaticResource HeaderNumberBox}"
+                                    Binding="{Binding Quantity}" FontSize="16" Width="120" />
+                <DataGridTextColumn Header="Total" Binding="{Binding Total, StringFormat='CHF \{0\}'}" FontSize="16"
+                                    Width="175" />
+            </DataGrid.Columns>
+        </DataGrid>
+        <Button Grid.Row="2" Margin="20,0" Grid.ColumnSpan="2" Background="IndianRed" HorizontalAlignment="Left"
+                Grid.Column="0" Height="40"
                 Width="200" Content="Back to menu" Command="{Binding MenuCommand}" FontSize="20" />
-        <Button Grid.Column="2" Margin="20" Grid.Row="2" Command="{Binding SaveCommand}" Content="Submit Order"
+        <Button Grid.Column="2" Margin="20" Grid.Row="2" Background="IndianRed" Command="{Binding SaveCommand}"
+                Content="Submit Order"
                 FontSize="20" />
     </Grid>
 </Window>

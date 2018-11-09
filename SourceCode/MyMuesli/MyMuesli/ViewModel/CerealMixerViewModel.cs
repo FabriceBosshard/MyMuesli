@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using log4net;
 using MyMuesli.Helpers;
 using MyMuesli.Model;
 using MyMuesli.Service;
@@ -22,6 +24,7 @@ namespace MyMuesli.ViewModel
         private readonly IDatabaseService _databaseService;
         private readonly ObservableCollection<Ingredient> _ingredients;
         private readonly IAppSession _session;
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private string _cerealName;
         private ObservableCollection<IngredientViewModel> _ingredientList;
 
@@ -149,18 +152,20 @@ namespace MyMuesli.ViewModel
             {
                 var cereal = new Cereal
                 {
+                    CerealId = _session.EditableCereal.CerealId,
                     CreatedOn = DateTime.Now,
                     Customer = _session.Customer,
                     Name = CerealName,
-                    Price = CerealContentCalculator.CalculatePrice(SelectedIngredientList)
+                    Price = CerealContentCalculator.CalculatePrice(SelectedIngredientList),
+                    Ingredients = SelectedIngredientList.Select(i=>i.Ingredient).ToList()
                 };
                 if (_session.EditableCereal != null)
                 {
-                    _databaseService.UpdateCereal(_session.EditableCereal,cereal,SelectedIngredientList);
+                    _databaseService.UpdateCereal(cereal);
                 }
                 else
                 {
-                    _databaseService.AddCereal(cereal, SelectedIngredientList);
+                    _databaseService.AddCereal(cereal);
                 }
 
                 MessageBox.Show("Muesli Created!", "Info");
@@ -238,7 +243,7 @@ namespace MyMuesli.ViewModel
                 Carbohydrates = a.Carbohydrates,
                 Category = a.Category,
                 Fat = a.Fat,
-                Id = a.Id,
+                IngredientId = a.IngredientId,
                 IngredientDescription = a.IngredientDescription,
                 Name = a.Name,
                 Portion = a.Portion,

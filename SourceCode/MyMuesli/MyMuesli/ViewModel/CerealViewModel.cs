@@ -1,7 +1,9 @@
 ﻿using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
+using System.Windows.Input;
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.CommandWpf;
 using MyMuesli.Helpers;
 using MyMuesli.Model;
 
@@ -12,7 +14,10 @@ namespace MyMuesli.ViewModel
         private const double Divider = 6.0;
         private readonly ObservableCollection<IngredientViewModel> _selectedIngredientList;
         public readonly Cereal Cereal;
+        private bool _isXXl;
         private const double PortionDivider = 100.0;
+        private int _quantity = 0;
+        private double _total;
 
         public CerealViewModel(ObservableCollection<IngredientViewModel> selectedIngredientList)
         {
@@ -21,11 +26,56 @@ namespace MyMuesli.ViewModel
             Carbohydrates = CalculateCarbohydrates();
             Fat = CalculateFat();
             EnergyContent = CerealContentCalculator.CalculateCalsAndJouleForMultiple(selectedIngredientList);
+            IncreaseCommand = new RelayCommand(() => Quantity++);
+            DecreaseCommand = new RelayCommand(() => Quantity--);
         }
 
         public CerealViewModel(Cereal cereal)
         {
             Cereal = cereal;
+        }
+        public ICommand IncreaseCommand { get; set; }
+        public ICommand DecreaseCommand { get; set; }
+
+        public bool IsXXl
+        {
+            get => _isXXl;
+            set
+            {
+                _isXXl = value;
+                CheckNewTotal();
+                RaisePropertyChanged();
+            }
+        }
+
+        public int Quantity
+        {
+            get => _quantity;
+            set
+            {
+                _quantity = value;
+                CheckNewTotal();
+                RaisePropertyChanged();
+            }
+        }
+
+        private void CheckNewTotal()
+        {
+            if (IsXXl)
+            {
+                Price = Price * 4.0;
+            }
+            Total = Price * Quantity;
+        }
+
+        public double Total
+        {
+            get => _total;
+            set
+            {
+                _total = value;
+                RaisePropertyChanged();
+            }
         }
 
         public string Name

@@ -1,8 +1,10 @@
 ﻿using System.Collections.ObjectModel;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Input;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
+using log4net;
 using MyMuesli.Helpers;
 using MyMuesli.Model;
 using MyMuesli.Service;
@@ -13,6 +15,7 @@ namespace MyMuesli.ViewModel
     {
         private readonly IDatabaseService _databaseService;
         private readonly CustomerDetails _customerDetails = new CustomerDetails();
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public CustomerDetailsViewModel(IDatabaseService service)
         {

@@ -15,9 +15,9 @@ namespace MyMuesli.Service
         ObservableCollection<Cereal> GetMyCereals(CustomerDetails customerDetails);
         ObservableCollection<Ingredient> GetIngredients();
         ObservableCollection<Category> GetCategories();
-        void AddCereal(Cereal cereal, ObservableCollection<IngredientViewModel> selectedIngredientList);
+        void AddCereal(Cereal cereal);
         void DeleteMuesli(Cereal selectedCereal);
         ObservableCollection<Ingredient> GetIngredientList(Cereal cereal);
-        void UpdateCereal(Cereal OldCereal, Cereal cereal, ObservableCollection<IngredientViewModel> selectedIngredientList);
+        void UpdateCereal(Cereal cereal);
     }
 }

@@ -1,15 +1,24 @@
-﻿namespace MyMuesli.Model
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace MyMuesli.Model
 {
     public class Ingredient
     {
-        public string Id { get; set; }
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public Guid IngredientId { get; set; }
         public string Name { get; set; }
         public int Portion { get; set; }
         public double Price { get; set; }
         public string IngredientDescription { get; set; }
-        public int Protein { get; set; }
-        public int Fat { get; set; }
-        public int Carbohydrates { get; set; }
+        public double Protein { get; set; }
+        public double Fat { get; set; }
+        public double Carbohydrates { get; set; }
         public Category Category { get; set; }
+        public virtual ICollection<Cereal> Cereals { get; set; }
     }
 }

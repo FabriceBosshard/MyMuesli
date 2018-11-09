@@ -71,7 +71,7 @@ namespace MyMuesli.ViewModel
             }
         }
 
-        public int Protein
+        public double Protein
         {
             get => Ingredient.Protein;
             set
@@ -81,7 +81,7 @@ namespace MyMuesli.ViewModel
             }
         }
 
-        public int Fat
+        public double Fat
         {
             get => Ingredient.Fat;
             set
@@ -91,7 +91,7 @@ namespace MyMuesli.ViewModel
             }
         }
 
-        public int Carbohydrates
+        public double Carbohydrates
         {
             get => Ingredient.Carbohydrates;
             set

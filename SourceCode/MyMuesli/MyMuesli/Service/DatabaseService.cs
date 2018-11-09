@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using MyMuesli.Model;
 using MyMuesli.ViewModel;
 
@@ -10,132 +13,84 @@ namespace MyMuesli.Service
     {
         public void AddUser(CustomerDetails customer)
         {
-            
+            using (var ctx = new MyCerealContext())
+            {
+                customer.ID = Guid.NewGuid();
+                ctx.CustomerDetails.Add(customer);
+                ctx.SaveChanges();
+            }
         }
 
         public ObservableCollection<Country> GetCountries()
         {
-            return new ObservableCollection<Country>()
+            using (var ctx = new MyCerealContext())
             {
-                new Country()
-                {
-                    Name = "Swiss"
-                },
-                new Country()
-                {
-                    Name = "sdfasdf"
-                },new Country()
-                {
-                    Name = "belgium"
-                }
-
-            };
+                return new ObservableCollection<Country>(ctx.Countries);
+            }
         }
 
         public ObservableCollection<Cereal> GetMyCereals(CustomerDetails customer)
         {
-            return new ObservableCollection<Cereal>()
+            using (var ctx = new MyCerealContext())
             {
-                new Cereal()
-                {
-                    CreatedOn = DateTime.Now,
-                    Customer = customer,
-                    Name =  "FuryMix"
-                },
-                new Cereal()
-                {
-                    CreatedOn = DateTime.Now,
-                    Customer = customer,
-                    Name =  "LameMix"
-                }
-            };
+                return new ObservableCollection<Cereal>(ctx.Cereals.Where(c => c.Customer.Equals(customer)));
+            }
         }
 
         public ObservableCollection<Ingredient> GetIngredients()
         {
-            return new ObservableCollection<Ingredient>()
+            using (var ctx = new MyCerealContext())
             {
-                new Ingredient()
-                {
-                    Carbohydrates = 50,
-                    Category = new Category()
-                    {
-                        Name = "Basics"
-                    },
-                    Name = "basic",
-                    Fat =  5,
-                    IngredientDescription = "dfsfdsf",
-                    Portion = 600,
-                    Protein = 20,
-                    Price = 1000
-                },
-                new Ingredient()
-                {
-                    Carbohydrates = 50,
-                    Category = new Category()
-                    {
-                        Name = "Basics"
-                    },
-                    Name = "basic",
-                    Fat =  5,
-                    IngredientDescription = "dfsfdsf",
-                    Portion = 600,
-                    Protein = 20,
-                    Price = 1000
-                },
-                new Ingredient()
-                {
-                    Carbohydrates = 50,
-                    Category = new Category()
-                    {
-                        Name = "Fruit"
-                    },
-                    Name = "Fruit",
-                    Fat =  5,
-                    IngredientDescription = "dfsfdsf",
-                    Portion = 70,
-                    Protein = 20,
-                    Price = 1000
-                },
-            };
+                return new ObservableCollection<Ingredient>(ctx.Ingredients);
+            }
         }
 
         public ObservableCollection<Category> GetCategories()
         {
-            return new ObservableCollection<Category>()
+            using (var ctx = new MyCerealContext())
             {
-                new Category()
-                {
-                    Name = "Basics"
-                },
-                new Category()
-                {
-                    Name = "Special"
-                },
-                new Category()
-                {
-                    Name = "Fruit"
-                }
-            };
+                return new ObservableCollection<Category>(ctx.Categories);
+            }
         }
 
-        public void AddCereal(Cereal cereal, ObservableCollection<IngredientViewModel> selectedIngredientList)
+        public void AddCereal(Cereal cereal)
         {
-            
+            using (var ctx = new MyCerealContext())
+            {
+                cereal.CerealId = Guid.NewGuid();
+                ctx.Cereals.Add(cereal);
+                ctx.SaveChanges();
+            }
         }
 
         public void DeleteMuesli(Cereal selectedCereal)
         {
-            
+            using (var ctx = new MyCerealContext())
+            {
+                ctx.Cereals.Remove(selectedCereal);
+                ctx.SaveChanges();
+            }
         }
 
         public ObservableCollection<Ingredient> GetIngredientList(Cereal cereal)
         {
-            return new ObservableCollection<Ingredient>();
+            using (var ctx = new MyCerealContext())
+            {
+                return new ObservableCollection<Ingredient>(ctx.Ingredients.Where(i => i.Cereals.Contains(cereal)));
+            }
         }
 
-        public void UpdateCereal(Cereal OldCereal, Cereal cereal, ObservableCollection<IngredientViewModel> selectedIngredientList)
+        public void UpdateCereal(Cereal cereal)
         {
+            using (var ctx = new MyCerealContext())
+            {
+                var old = ctx.Cereals.First(c => c.CerealId == cereal.CerealId);
+                old.Name = cereal.Name;
+                old.CreatedOn = cereal.CreatedOn;
+                old.Ingredients = cereal.Ingredients;
+                old.Price = cereal.Price;
+                ctx.SaveChanges();
+            }
         }
     }
 }

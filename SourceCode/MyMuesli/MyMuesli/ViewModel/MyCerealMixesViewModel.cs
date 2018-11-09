@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
+using log4net;
 using MyMuesli.Model;
 using MyMuesli.Service;
 using MyMuesli.Views;
@@ -15,16 +17,17 @@ using Unity;
 
 namespace MyMuesli.ViewModel
 {
-    public class MyCerealMixesViewModel
+    public class MyCerealMixesViewModel: ViewModelBase
     {
         private IDatabaseService _databaseService;
         private IAppSession _session;
-
+        private ObservableCollection<MyCerealViewModel> _myCereals;
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         public MyCerealMixesViewModel(IDatabaseService databaseService, IAppSession session)
         {
             _databaseService = databaseService;
             _session = session;
-            MyCereals = CreateViewModelFromCereal(_databaseService.GetMyCereals(_session.Customer));
+            _myCereals = CreateViewModelFromCereal(_databaseService.GetMyCereals(_session.Customer));
             MenuCommand = new RelayCommand(BackToMenu);
             DeleteCommand = new RelayCommand(Delete);
             EditCommand = new RelayCommand(EditCereal);
@@ -48,6 +51,7 @@ namespace MyMuesli.ViewModel
             else
             {
                 MessageBox.Show("Please select a Muesli", "Warn");
+                Log.Warn("No Muesli Selected!");
             }
         }
 
@@ -61,11 +65,13 @@ namespace MyMuesli.ViewModel
                 if (result== MessageBoxResult.OK)
                 {
                     _databaseService.DeleteMuesli(SelectedCereal.Cereal);
+                    MyCereals.Remove(SelectedCereal);
                 }
             }
             else
             {
                 MessageBox.Show("Please select a Muesli", "Warn");
+                Log.Warn("No Muesli Selected!");
             }
         }
 
@@ -82,7 +88,14 @@ namespace MyMuesli.ViewModel
 
         public MyCerealViewModel SelectedCereal { get; set; }
 
-        public ObservableCollection<MyCerealViewModel> MyCereals { get; }
+        public ObservableCollection<MyCerealViewModel> MyCereals {
+            get { return _myCereals; }
+            set
+            {
+                _myCereals = value;
+                RaisePropertyChanged();
+            }
+        }
     }
 
     public class MyCerealViewModel : ViewModelBase
