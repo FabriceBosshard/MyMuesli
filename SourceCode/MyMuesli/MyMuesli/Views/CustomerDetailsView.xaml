@@ -60,7 +60,8 @@
             <TextBox Grid.Row="2" Text="{Binding Zip}" Grid.Column="1" Margin="5,5" />
             <TextBox Grid.Row="2" Text="{Binding City}" Grid.Column="2" Margin="5,5" />
 
-            <ComboBox Grid.Row="3" Background="IndianRed" ItemsSource="{Binding Countries}" SelectedItem="{Binding SelectedCountry}"
+            <ComboBox Grid.Row="3" Background="IndianRed" ItemsSource="{Binding Countries}"
+                      SelectedItem="{Binding SelectedCountry}"
                       Grid.Column="1" Margin="5,5" Grid.ColumnSpan="2">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>

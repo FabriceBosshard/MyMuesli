@@ -1,5 +1,4 @@
-﻿using System;
-using GalaSoft.MvvmLight;
+﻿using GalaSoft.MvvmLight;
 using MyMuesli.Helpers;
 using MyMuesli.Model;
 
@@ -14,11 +13,6 @@ namespace MyMuesli.ViewModel
         {
             Ingredient = selectedIngredient;
             EnergyContent = CalculateEnergyContent();
-        }
-
-        private string CalculateEnergyContent()
-        {
-            return CerealContentCalculator.CalculateCalsAndJoule(this);
         }
 
         public string Name
@@ -99,6 +93,11 @@ namespace MyMuesli.ViewModel
                 Ingredient.Carbohydrates = value;
                 RaisePropertyChanged();
             }
+        }
+
+        private string CalculateEnergyContent()
+        {
+            return CerealContentCalculator.CalculateCalsAndJoule(this);
         }
     }
 }

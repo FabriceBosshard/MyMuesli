@@ -8,7 +8,6 @@ namespace MyMuesli.Service
         {
             Customer = selectedCustomer;
         }
-
         public CustomerDetails Customer { get; set; }
         public Cereal EditableCereal { get; set; }
     }

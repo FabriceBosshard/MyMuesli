@@ -1,9 +1,6 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MyMuesli.Helpers;
+﻿using MyMuesli.Helpers;
 using MyMuesli.Model;
 using NUnit.Framework;
-using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace MyMuesliTests
 {
@@ -11,130 +8,136 @@ namespace MyMuesliTests
     public class CustomerValidationTest
     {
         [Test]
-        public void WrongName()
+        public void CorrectCustomer()
         {
-            var customer = new CustomerDetails()
+            var customer = new CustomerDetails
             {
-                Name = "pe",
+                Name = "person",
                 Address = "Something",
                 City = "Zurich",
-                Country = new Country()
+                Country = new Country
                 {
                     Name = "Swiss"
                 },
                 Zip = "3434",
                 Phone = "079 620 00 35",
-                Email = "fab.bos@bos.com",
+                Email = "fab.bos@bos.com"
             };
-            Assert.IsFalse(CustomerValidation.ValidateCustomer(customer));
+            Assert.IsTrue(CustomerValidation.ValidateCustomer(customer));
         }
+
         [Test]
         public void WrongAddress()
         {
-            var customer = new CustomerDetails()
+            var customer = new CustomerDetails
             {
                 Name = "person",
                 Address = "se",
                 City = "Zurich",
-                Country = new Country()
+                Country = new Country
                 {
                     Name = "Swiss"
                 },
                 Zip = "3434",
                 Phone = "079 620 00 35",
-                Email = "fab.bos@bos.com",
+                Email = "fab.bos@bos.com"
             };
             Assert.IsFalse(CustomerValidation.ValidateCustomer(customer));
         }
-        [Test]
-        public void WrongZip()
-        {
-            var customer = new CustomerDetails()
-            {
-                Name = "person",
-                Address = "Something",
-                City = "Zurich",
-                Country = new Country()
-                {
-                    Name = "Swiss"
-                },
-                Zip = "dsfsd",
-                Phone = "079 620 00 35",
-                Email = "fab.bos@bos.com",
-            };
-            Assert.IsFalse(CustomerValidation.ValidateCustomer(customer));
-        }
+
         [Test]
         public void WrongCity()
         {
-            var customer = new CustomerDetails()
+            var customer = new CustomerDetails
             {
                 Name = "person",
                 Address = "Something",
                 City = "s",
-                Country = new Country()
+                Country = new Country
                 {
                     Name = "Swiss"
                 },
                 Zip = "3434",
                 Phone = "079 620 00 35",
-                Email = "fab.bos@bos.com",
+                Email = "fab.bos@bos.com"
             };
             Assert.IsFalse(CustomerValidation.ValidateCustomer(customer));
         }
+
         [Test]
-        public void WrongPhone()
+        public void WrongMail()
         {
-            var customer = new CustomerDetails()
+            var customer = new CustomerDetails
             {
                 Name = "person",
                 Address = "Something",
                 City = "Zurich",
-                Country = new Country()
+                Country = new Country
+                {
+                    Name = "Swiss"
+                },
+                Zip = "3434",
+                Phone = "079 620 00 35",
+                Email = "fab.bos@bo"
+            };
+            Assert.IsFalse(CustomerValidation.ValidateCustomer(customer));
+        }
+
+        [Test]
+        public void WrongName()
+        {
+            var customer = new CustomerDetails
+            {
+                Name = "pe",
+                Address = "Something",
+                City = "Zurich",
+                Country = new Country
+                {
+                    Name = "Swiss"
+                },
+                Zip = "3434",
+                Phone = "079 620 00 35",
+                Email = "fab.bos@bos.com"
+            };
+            Assert.IsFalse(CustomerValidation.ValidateCustomer(customer));
+        }
+
+        [Test]
+        public void WrongPhone()
+        {
+            var customer = new CustomerDetails
+            {
+                Name = "person",
+                Address = "Something",
+                City = "Zurich",
+                Country = new Country
                 {
                     Name = "Swiss"
                 },
                 Zip = "3434",
                 Phone = "079",
-                Email = "fab.bos@bos.com",
+                Email = "fab.bos@bos.com"
             };
             Assert.IsFalse(CustomerValidation.ValidateCustomer(customer));
         }
+
         [Test]
-        public void WrongMail()
+        public void WrongZip()
         {
-            var customer = new CustomerDetails()
+            var customer = new CustomerDetails
             {
                 Name = "person",
                 Address = "Something",
                 City = "Zurich",
-                Country = new Country()
+                Country = new Country
                 {
                     Name = "Swiss"
                 },
-                Zip = "3434",
+                Zip = "dsfsd",
                 Phone = "079 620 00 35",
-                Email = "fab.bos@bo",
+                Email = "fab.bos@bos.com"
             };
             Assert.IsFalse(CustomerValidation.ValidateCustomer(customer));
-        }
-        [Test]
-        public void CorrectCustomer()
-        {
-            var customer = new CustomerDetails()
-            {
-                Name = "person",
-                Address = "Something",
-                City = "Zurich",
-                Country = new Country()
-                {
-                    Name = "Swiss"
-                },
-                Zip = "3434",
-                Phone = "079 620 00 35",
-                Email = "fab.bos@bos.com",
-            };
-            Assert.IsTrue(CustomerValidation.ValidateCustomer(customer));
         }
     }
 }

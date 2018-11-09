@@ -3,170 +3,207 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         mc:Ignorable="d"
         Title="CerealMixerView" ResizeMode="NoResize" Height="800" Width="800" WindowStartupLocation="CenterScreen"
         DataContext="{Binding Cereal, Source={StaticResource ViewModelLocator}}">
-    <Window.Resources>
-        <ControlTemplate x:Key="AddedListTemplate">
-            <Grid Margin="2,2">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100"/>
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-                <Border BorderThickness="1" BorderBrush="Black">
-                    <TextBlock HorizontalAlignment="Center" FontSize="12" Background="DimGray" 
-                               Text="{Binding Portion, StringFormat='\{0\} g'}" TextAlignment="Center" Width="100">
-                    </TextBlock>
-                </Border>
-                <TextBlock HorizontalAlignment="Left" Grid.Column="1"  FontSize="16" Margin="5,0"  VerticalAlignment="Center" Text="{Binding Name, FallbackValue='(Empty)'}" />
-            </Grid>
-        </ControlTemplate>
-        <DataTemplate x:Key="ListTemplate">
-            <Grid Height="100" Width="450" Margin="5,5">
-                <Grid.RowDefinitions>
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition Height="30" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="150" />
-                    <ColumnDefinition />
-                    <ColumnDefinition Width="120"/>
-                </Grid.ColumnDefinitions>
-                <Label Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right" FontSize="16" Content="Price:" />
-                <Label Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right" FontSize="16" Content="Portion Size" />
-                <TextBlock Grid.Row="0" Grid.Column="0" FontSize="18" Text="{Binding Name}" />
-                <TextBlock Grid.Row="0" Grid.Column="2" HorizontalAlignment="Right" FontSize="16" Text="{Binding Price, StringFormat='CHF \{0\}'}" />
-                <TextBlock Grid.Row="1" Grid.Column="2" HorizontalAlignment="Right" FontSize="16" Text="{Binding Portion, StringFormat='\{0\} g'}" />
-                <Button Grid.Row="2" HorizontalAlignment="Left" Margin="5" Height="20" FontSize="12" VerticalAlignment="Center"
-                        BorderThickness="0" FontStyle="Oblique" Background="Transparent"
-                        BorderBrush="Transparent"
-                        Command="{Binding RelativeSource={RelativeSource FindAncestor, 
-                            AncestorType={x:Type Window}}, Path=DataContext.InformationCommand}"
-                        Content="More Information"
-                        Grid.Column="0" Width="100"/>
-                <Button Grid.Row="2" Grid.Column="1" BorderThickness="0"
-                        Grid.ColumnSpan="2" HorizontalAlignment="Right" Margin="5" Height="20" BorderBrush="Transparent" FontSize="12" Background="Transparent" VerticalAlignment="Center"
-                        Content="Add to muesli"
-                        Command="{Binding RelativeSource={RelativeSource FindAncestor, 
-                            AncestorType={x:Type Window}}, Path=DataContext.AddCommand}" />
-            </Grid>
-        </DataTemplate>
-    </Window.Resources>
-    <Grid Margin="10,10">
+  <Window.Resources>
+    <ControlTemplate x:Key="AddedListTemplate">
+      <Grid Margin="2,2">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="100" />
+          <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Border BorderThickness="1" BorderBrush="Black">
+          <TextBlock HorizontalAlignment="Center" FontSize="12" Background="DimGray"
+                     Text="{Binding Portion, StringFormat='\{0\} g'}"
+                     TextAlignment="Center" Width="100" />
+        </Border>
+        <TextBlock HorizontalAlignment="Left" Grid.Column="1" FontSize="16" Margin="5,0"
+                   VerticalAlignment="Center" Text="{Binding Name, FallbackValue='(Empty)'}" />
+      </Grid>
+    </ControlTemplate>
+    <DataTemplate x:Key="ListTemplate">
+      <Grid Height="100" Width="450" Margin="5,5">
         <Grid.RowDefinitions>
-            <RowDefinition Height="125" />
-            <RowDefinition />
-            <RowDefinition Height="75" />
+          <RowDefinition />
+          <RowDefinition />
+          <RowDefinition Height="30" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="500" />
-            <ColumnDefinition />
+          <ColumnDefinition Width="150" />
+          <ColumnDefinition />
+          <ColumnDefinition Width="120" />
         </Grid.ColumnDefinitions>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="75" />
-                <RowDefinition />
-            </Grid.RowDefinitions>
-            <Label Grid.Row="0" FontSize="50" VerticalAlignment="Center" FontFamily="Comic Sans MS"
-                   HorizontalAlignment="Left" Content="Just Muesli" />
-            <Label Grid.Row="1" FontSize="30" VerticalAlignment="Center" FontFamily="Comic Sans MS"
-                   HorizontalAlignment="Left" Content="Muesli Mixer" />
-        </Grid>
-
-        <TabControl Margin="5,5" x:Name="ContS" Grid.Row="1" Grid.Column="0" ItemsSource="{Binding Categories}"
-                    SelectedItem="{Binding SelectedTab}">
-            <TabControl.ItemTemplate>
-                <DataTemplate>
-                    <Label Content="{Binding Name}" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                </DataTemplate>
-            </TabControl.ItemTemplate>
-            <TabControl.ContentTemplate>
-                <DataTemplate>
-                    <ListView
-                        ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, 
-                            AncestorType={x:Type Window}}, Path=DataContext.IngredientList}"
-                        ItemTemplate="{StaticResource ListTemplate}"
-                        SelectedItem="{Binding RelativeSource={RelativeSource FindAncestor, 
-                                    AncestorType={x:Type Window}}, Path=DataContext.SelectedIngredient}" />
-                </DataTemplate>
-            </TabControl.ContentTemplate>
-        </TabControl>
-
-        <Border Grid.Row="1" BorderThickness="1" BorderBrush="Black" Grid.Column="1" Margin="5,5" Grid.RowSpan="2">
-            <Grid Margin="5,5">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="50" />
-                    <RowDefinition />
-                    <RowDefinition Height="100" />
-                    <RowDefinition Height="25" />
-                    <RowDefinition Height="75" />
-                </Grid.RowDefinitions>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="75" />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-                    <Label Content="Name" FontSize="16" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"
-                           HorizontalAlignment="Center" />
-                    <TextBox Grid.Column="1" FontSize="16" HorizontalAlignment="Center" Width="160"
-                             Text="{Binding CerealName}" VerticalAlignment="Center" />
-                </Grid>
-                <ListView Margin="10,10" Grid.Row="1" SelectedItem="{Binding SelectedAddedIngredient}">
-                    <ListViewItem Template="{StaticResource AddedListTemplate}"
-                                  DataContext="{Binding SelectedIngredientList[11]}" Height="25" />
-                    <ListViewItem Template="{StaticResource AddedListTemplate}" Height="25"
-                                  DataContext="{Binding SelectedIngredientList[10]}" />
-                    <ListViewItem Template="{StaticResource AddedListTemplate}" Height="25"
-                                  DataContext="{Binding SelectedIngredientList[9]}" />
-                    <ListViewItem Template="{StaticResource AddedListTemplate}" Height="25"
-                                  DataContext="{Binding SelectedIngredientList[8]}" />
-                    <ListViewItem Template="{StaticResource AddedListTemplate}" Height="25"
-                                  DataContext="{Binding SelectedIngredientList[7]}" />
-                    <ListViewItem Template="{StaticResource AddedListTemplate}" Height="25"
-                                  DataContext="{Binding SelectedIngredientList[6]}" />
-                    <ListViewItem Template="{StaticResource AddedListTemplate}" Height="25"
-                                  DataContext="{Binding SelectedIngredientList[5]}" />
-                    <ListViewItem Template="{StaticResource AddedListTemplate}" Height="25"
-                                  DataContext="{Binding SelectedIngredientList[4]}" />
-                    <ListViewItem Template="{StaticResource AddedListTemplate}" Height="25"
-                                  DataContext="{Binding SelectedIngredientList[3]}" />
-                    <ListViewItem Template="{StaticResource AddedListTemplate}" Height="25"
-                                  DataContext="{Binding SelectedIngredientList[2]}" />
-                    <ListViewItem Template="{StaticResource AddedListTemplate}" Height="25"
-                                  DataContext="{Binding SelectedIngredientList[1]}" />
-                    <ListViewItem Template="{StaticResource AddedListTemplate}" Height="40"
-                                  DataContext="{Binding SelectedIngredientList[0]}" />
-                </ListView>
-                <Button Grid.Row="4"  Content="Save muesli mix" VerticalAlignment="Bottom" Command="{Binding SaveCommand}"
-                        FontSize="20" Height="40" Background="IndianRed" Margin="10,10"/>
-                <Grid Grid.Row="2" Margin="10,10">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-                    <Label HorizontalAlignment="Left" VerticalAlignment="Center" Content="TOTALS:" FontSize="12" />
-                    <Label HorizontalAlignment="Left" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center"
-                           FontSize="13" Content="Price:" />
-                    <Label HorizontalAlignment="Left" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center"
-                           FontSize="12" Content="Nutritional values:" />
-                    <TextBlock HorizontalAlignment="Right" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center"
-                               FontSize="13" Text="{Binding TotalPrice,StringFormat='#.##'}" />
-                    <TextBlock HorizontalAlignment="Right" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center"
-                               FontSize="12" Text="{Binding TotalNValues}" />
-                </Grid>
-                <Button Grid.Row="3" VerticalAlignment="Top" Background="IndianRed" Content="Details" Command="{Binding DetailsCommand}"
-                        HorizontalAlignment="Right"
-                        Width="100" Height="20" Margin="10,0" />
-            </Grid>
-        </Border>
-        <Button Background="IndianRed" Height="40" Grid.Row="2" Grid.Column="0" Width="200" HorizontalAlignment="Left" VerticalAlignment="Center"  Margin="20,0"
-                Content="Back to menu" Command="{Binding BackCommand}" FontSize="20" />
+        <Label Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right" FontSize="16"
+               Content="Price:" />
+        <Label Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right" FontSize="16"
+               Content="Portion Size" />
+        <TextBlock Grid.Row="0" Grid.Column="0" FontSize="18" Text="{Binding Name}" />
+        <TextBlock Grid.Row="0" Grid.Column="2" HorizontalAlignment="Right" FontSize="16"
+                   Text="{Binding Price, StringFormat='CHF \{0\}'}" />
+        <TextBlock Grid.Row="1" Grid.Column="2" HorizontalAlignment="Right" FontSize="16"
+                   Text="{Binding Portion, StringFormat='\{0\} g'}" />
+        <Button Grid.Row="2" HorizontalAlignment="Left" Margin="5" Height="20" FontSize="12"
+                VerticalAlignment="Center"
+                BorderThickness="0" FontStyle="Oblique" Background="Transparent"
+                BorderBrush="Transparent"
+                Command="{Binding RelativeSource={RelativeSource FindAncestor, 
+                            AncestorType={x:Type Window}}, Path=DataContext.InformationCommand}"
+                Content="More Information"
+                Grid.Column="0" Width="100" />
+        <Button Grid.Row="2" Grid.Column="1" BorderThickness="0"
+                Grid.ColumnSpan="2" HorizontalAlignment="Right" Margin="5" Height="20"
+                BorderBrush="Transparent" FontSize="12" Background="Transparent"
+                VerticalAlignment="Center"
+                Content="Add to muesli"
+                Command="{Binding RelativeSource={RelativeSource FindAncestor, 
+                            AncestorType={x:Type Window}}, Path=DataContext.AddCommand}" />
+      </Grid>
+    </DataTemplate>
+  </Window.Resources>
+  <Grid Margin="10,10">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="125" />
+      <RowDefinition />
+      <RowDefinition Height="75" />
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="500" />
+      <ColumnDefinition />
+    </Grid.ColumnDefinitions>
+    <Grid>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="75" />
+        <RowDefinition />
+      </Grid.RowDefinitions>
+      <Label Grid.Row="0" FontSize="50" VerticalAlignment="Center"
+             FontFamily="Comic Sans MS"
+             HorizontalAlignment="Left" Content="Just Muesli" />
+      <Label Grid.Row="1" FontSize="30" VerticalAlignment="Center"
+             FontFamily="Comic Sans MS"
+             HorizontalAlignment="Left" Content="Muesli Mixer" />
     </Grid>
+
+    <TabControl Margin="5,5" x:Name="ContS" Grid.Row="1" Grid.Column="0"
+                ItemsSource="{Binding Categories}"
+                SelectedItem="{Binding SelectedTab}">
+      <TabControl.ItemTemplate>
+        <DataTemplate>
+          <Label Content="{Binding Name}" HorizontalAlignment="Center"
+                 VerticalAlignment="Center" />
+        </DataTemplate>
+      </TabControl.ItemTemplate>
+      <TabControl.ContentTemplate>
+        <DataTemplate>
+          <ListView
+            ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, 
+                            AncestorType={x:Type Window}}, Path=DataContext.IngredientList}"
+            ItemTemplate="{StaticResource ListTemplate}"
+            SelectedItem="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                    AncestorType={x:Type Window}}, Path=DataContext.SelectedIngredient}" />
+        </DataTemplate>
+      </TabControl.ContentTemplate>
+    </TabControl>
+
+    <Border Grid.Row="1" BorderThickness="1" BorderBrush="Black" Grid.Column="1"
+            Margin="5,5" Grid.RowSpan="2">
+      <Grid Margin="5,5">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="50" />
+          <RowDefinition />
+          <RowDefinition Height="100" />
+          <RowDefinition Height="25" />
+          <RowDefinition Height="75" />
+        </Grid.RowDefinitions>
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="75" />
+            <ColumnDefinition />
+          </Grid.ColumnDefinitions>
+          <Label Content="Name" FontSize="16" Grid.Row="0" Grid.Column="0"
+                 VerticalAlignment="Center"
+                 HorizontalAlignment="Center" />
+          <TextBox Grid.Column="1" FontSize="16" HorizontalAlignment="Center"
+                   Width="160"
+                   Text="{Binding CerealName}" VerticalAlignment="Center" />
+        </Grid>
+        <ListView Margin="10,10" Grid.Row="1"
+                  SelectedItem="{Binding SelectedAddedIngredient}">
+          <ListViewItem Template="{StaticResource AddedListTemplate}"
+                        DataContext="{Binding SelectedIngredientList[11]}"
+                        Height="25" />
+          <ListViewItem Template="{StaticResource AddedListTemplate}"
+                        Height="25"
+                        DataContext="{Binding SelectedIngredientList[10]}" />
+          <ListViewItem Template="{StaticResource AddedListTemplate}"
+                        Height="25"
+                        DataContext="{Binding SelectedIngredientList[9]}" />
+          <ListViewItem Template="{StaticResource AddedListTemplate}"
+                        Height="25"
+                        DataContext="{Binding SelectedIngredientList[8]}" />
+          <ListViewItem Template="{StaticResource AddedListTemplate}"
+                        Height="25"
+                        DataContext="{Binding SelectedIngredientList[7]}" />
+          <ListViewItem Template="{StaticResource AddedListTemplate}"
+                        Height="25"
+                        DataContext="{Binding SelectedIngredientList[6]}" />
+          <ListViewItem Template="{StaticResource AddedListTemplate}"
+                        Height="25"
+                        DataContext="{Binding SelectedIngredientList[5]}" />
+          <ListViewItem Template="{StaticResource AddedListTemplate}"
+                        Height="25"
+                        DataContext="{Binding SelectedIngredientList[4]}" />
+          <ListViewItem Template="{StaticResource AddedListTemplate}"
+                        Height="25"
+                        DataContext="{Binding SelectedIngredientList[3]}" />
+          <ListViewItem Template="{StaticResource AddedListTemplate}"
+                        Height="25"
+                        DataContext="{Binding SelectedIngredientList[2]}" />
+          <ListViewItem Template="{StaticResource AddedListTemplate}"
+                        Height="25"
+                        DataContext="{Binding SelectedIngredientList[1]}" />
+          <ListViewItem Template="{StaticResource AddedListTemplate}"
+                        Height="40"
+                        DataContext="{Binding SelectedIngredientList[0]}" />
+        </ListView>
+        <Button Grid.Row="4" Content="Save muesli mix" VerticalAlignment="Bottom"
+                Command="{Binding SaveCommand}"
+                FontSize="20" Height="40" Background="IndianRed" Margin="10,10" />
+        <Grid Grid.Row="2" Margin="10,10">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+          </Grid.ColumnDefinitions>
+          <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+          </Grid.RowDefinitions>
+          <Label HorizontalAlignment="Left" VerticalAlignment="Center"
+                 Content="TOTALS:" FontSize="12" />
+          <Label HorizontalAlignment="Left" Grid.Row="1" Grid.Column="0"
+                 VerticalAlignment="Center"
+                 FontSize="13" Content="Price:" />
+          <Label HorizontalAlignment="Left" Grid.Row="2" Grid.Column="0"
+                 VerticalAlignment="Center"
+                 FontSize="12" Content="Nutritional values:" />
+          <TextBlock HorizontalAlignment="Right" Grid.Row="1" Grid.Column="1"
+                     VerticalAlignment="Center"
+                     FontSize="13" Text="{Binding TotalPrice,StringFormat='#.##'}" />
+          <TextBlock HorizontalAlignment="Right" Grid.Row="2" Grid.Column="1"
+                     VerticalAlignment="Center"
+                     FontSize="12" Text="{Binding TotalNValues}" />
+        </Grid>
+        <Button Grid.Row="3" VerticalAlignment="Top" Background="IndianRed"
+                Content="Details"
+                Command="{Binding DetailsCommand}"
+                HorizontalAlignment="Right"
+                Width="100" Height="20" Margin="10,0" />
+      </Grid>
+    </Border>
+    <Button Background="IndianRed" Height="40" Grid.Row="2" Grid.Column="0" Width="200"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center" Margin="20,0"
+            Content="Back to menu" Command="{Binding BackCommand}" FontSize="20" />
+  </Grid>
 </Window>

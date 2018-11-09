@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using MyMuesli.ViewModel;
 
 namespace MyMuesli.Model
 {
@@ -10,7 +8,7 @@ namespace MyMuesli.Model
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid ID { get; set; }
+        public int CustomerDetailsId { get; set; }
         public string Name { get; set; }
         public string Address { get; set; }
         public string City { get; set; }

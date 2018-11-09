@@ -12,11 +12,11 @@ namespace MyMuesli.ViewModel
     public class CerealViewModel : ViewModelBase
     {
         private const double Divider = 6.0;
+        private const double PortionDivider = 100.0;
         private readonly ObservableCollection<IngredientViewModel> _selectedIngredientList;
         public readonly Cereal Cereal;
         private bool _isXXl;
-        private const double PortionDivider = 100.0;
-        private int _quantity = 0;
+        private int _quantity;
         private double _total;
 
         public CerealViewModel(ObservableCollection<IngredientViewModel> selectedIngredientList)
@@ -34,6 +34,7 @@ namespace MyMuesli.ViewModel
         {
             Cereal = cereal;
         }
+
         public ICommand IncreaseCommand { get; set; }
         public ICommand DecreaseCommand { get; set; }
 
@@ -57,15 +58,6 @@ namespace MyMuesli.ViewModel
                 CheckNewTotal();
                 RaisePropertyChanged();
             }
-        }
-
-        private void CheckNewTotal()
-        {
-            if (IsXXl)
-            {
-                Price = Price * 4.0;
-            }
-            Total = Price * Quantity;
         }
 
         public double Total
@@ -97,24 +89,36 @@ namespace MyMuesli.ViewModel
                 RaisePropertyChanged();
             }
         }
+
         public string CreatedOn => Cereal.CreatedOn.ToString(CultureInfo.InvariantCulture);
+
+        public string EnergyContent { get; set; }
+        public double Protein { get; set; }
+        public double Carbohydrates { get; set; }
+        public double Fat { get; set; }
+
+        private void CheckNewTotal()
+        {
+            if (IsXXl) Price = Price * 4.0;
+            Total = Price * Quantity;
+        }
 
         private double CalculateFat()
         {
             var sum = _selectedIngredientList.Select(CalculateFat).Sum();
-            return (sum / Divider);
+            return sum / Divider;
         }
 
         private static double CalculateFat(IngredientViewModel ingredientVm)
         {
-            var var = (ingredientVm.Ingredient.Fat / PortionDivider);
-            return  var * ingredientVm.Ingredient.Portion;
+            var var = ingredientVm.Ingredient.Fat / PortionDivider;
+            return var * ingredientVm.Ingredient.Portion;
         }
 
         private double CalculateCarbohydrates()
         {
             var sum = _selectedIngredientList.Select(CalculateCarbohydrates).Sum();
-            return (sum / Divider);
+            return sum / Divider;
         }
 
         private static double CalculateCarbohydrates(IngredientViewModel ingredientVm)
@@ -132,12 +136,7 @@ namespace MyMuesli.ViewModel
         private double CalculateProtein()
         {
             var sum = _selectedIngredientList.Select(CalculateProtein).Sum();
-            return (sum / Divider);
+            return sum / Divider;
         }
-
-        public string EnergyContent { get; set; }
-        public double Protein { get; set; }
-        public double Carbohydrates { get; set; }
-        public double Fat { get; set; }
     }
 }

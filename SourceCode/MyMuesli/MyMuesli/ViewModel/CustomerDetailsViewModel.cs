@@ -11,12 +11,11 @@ using MyMuesli.Service;
 
 namespace MyMuesli.ViewModel
 {
-    public class CustomerDetailsViewModel: ViewModelBase
+    public class CustomerDetailsViewModel : ViewModelBase
     {
-        private readonly IDatabaseService _databaseService;
-        private readonly CustomerDetails _customerDetails = new CustomerDetails();
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
+        private readonly CustomerDetails _customerDetails = new CustomerDetails();
+        private readonly IDatabaseService _databaseService;
         public CustomerDetailsViewModel(IDatabaseService service)
         {
             _databaseService = service;
@@ -25,35 +24,6 @@ namespace MyMuesli.ViewModel
 
             SaveCommand = new RelayCommand(SaveUser);
             MenuCommand = new RelayCommand(BackToMenu);
-        }
-
-        private bool ValidateCustomer()
-        {          
-            if (CustomerValidation.ValidateCustomer(_customerDetails))
-            {
-                return true;
-            }
-
-            MessageBox.Show(CustomerValidation.WrongField, "Wrong Input!");
-            return false;
-        }
-
-        private void BackToMenu()
-        {
-            var currentView = Application.Current.Windows[0];
-            new MainWindow().Show();
-            currentView?.Close();  
-        }
-
-        private void SaveUser()
-        {
-            if (ValidateCustomer())
-            {
-                _databaseService.AddUser(_customerDetails);
-                ViewModelLocator.Instance.InitCustomer(_customerDetails);
-                MessageBox.Show("Customer has been saved!","info");
-                BackToMenu();
-            }
         }
 
         public ICommand SaveCommand { get; set; }
@@ -68,7 +38,9 @@ namespace MyMuesli.ViewModel
                 RaisePropertyChanged();
             }
         }
-        public string Address {
+
+        public string Address
+        {
             get => _customerDetails.Address;
             set
             {
@@ -76,7 +48,9 @@ namespace MyMuesli.ViewModel
                 RaisePropertyChanged();
             }
         }
-        public string Zip {
+
+        public string Zip
+        {
             get => _customerDetails.Zip;
             set
             {
@@ -84,7 +58,9 @@ namespace MyMuesli.ViewModel
                 RaisePropertyChanged();
             }
         }
-        public string City {
+
+        public string City
+        {
             get => _customerDetails.City;
             set
             {
@@ -115,12 +91,39 @@ namespace MyMuesli.ViewModel
             }
         }
 
-        public string Email {
+        public string Email
+        {
             get => _customerDetails.Email;
             set
             {
                 _customerDetails.Email = value;
                 RaisePropertyChanged();
+            }
+        }
+
+        private bool ValidateCustomer()
+        {
+            if (CustomerValidation.ValidateCustomer(_customerDetails)) return true;
+
+            MessageBox.Show(CustomerValidation.WrongField, "Wrong Input!");
+            return false;
+        }
+
+        private void BackToMenu()
+        {
+            var currentView = Application.Current.Windows[0];
+            new MainWindow().Show();
+            currentView?.Close();
+        }
+
+        private void SaveUser()
+        {
+            if (ValidateCustomer())
+            {
+                _databaseService.AddUser(_customerDetails);
+                ViewModelLocator.Instance.InitCustomer(_customerDetails);
+                MessageBox.Show("Customer has been saved!", "info");
+                BackToMenu();
             }
         }
     }

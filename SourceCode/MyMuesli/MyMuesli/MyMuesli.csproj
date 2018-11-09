@@ -66,7 +66,6 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Globalization" />
     <Reference Include="System.Runtime" />
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmLightLibs.5.3.0.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
@@ -90,33 +89,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Migrations\201811081910437_InitialCreate.cs" />
-    <Compile Include="Migrations\201811081910437_InitialCreate.Designer.cs">
-      <DependentUpon>201811081910437_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201811090930251_IntToDouble.cs" />
-    <Compile Include="Migrations\201811090930251_IntToDouble.Designer.cs">
-      <DependentUpon>201811090930251_IntToDouble.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201811090958181_PrimaryKeyError.cs" />
-    <Compile Include="Migrations\201811090958181_PrimaryKeyError.Designer.cs">
-      <DependentUpon>201811090958181_PrimaryKeyError.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201811091005191_setAutoIncrement.cs" />
-    <Compile Include="Migrations\201811091005191_setAutoIncrement.Designer.cs">
-      <DependentUpon>201811091005191_setAutoIncrement.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201811091011023_AnotherIncrementTry.cs" />
-    <Compile Include="Migrations\201811091011023_AnotherIncrementTry.Designer.cs">
-      <DependentUpon>201811091011023_AnotherIncrementTry.cs</DependentUpon>
+    <Compile Include="Migrations\InitDatabase.cs" />
+    <Compile Include="Migrations\InitDatabase.Designer.cs">
+      <DependentUpon>InitDatabase.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\CustomerDetails.cs" />
     <Compile Include="Service\DatabaseService.cs" />
     <Compile Include="Service\MyCerealContext.cs" />
     <Compile Include="Service\IDatabaseService.cs" />
-    <Compile Include="Tests\CerealContentCalculatorTest.cs" />
-    <Compile Include="Tests\CustomerValidationTest.cs" />
     <Compile Include="ViewModelLocator.cs" />
     <Compile Include="Model\Cereal.cs" />
     <Compile Include="Model\Category.cs" />
@@ -131,6 +112,7 @@
     <Compile Include="Service\IAppSession.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\MyCerealMixesViewModel.cs" />
+    <Compile Include="ViewModel\MyCerealViewModel.cs" />
     <Compile Include="ViewModel\OrderViewModel.cs" />
     <Compile Include="Views\CerealMixerView.xaml.cs">
       <DependentUpon>CerealMixerView.xaml</DependentUpon>
@@ -202,20 +184,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="Migrations\201811081910437_InitialCreate.resx">
-      <DependentUpon>201811081910437_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201811090930251_IntToDouble.resx">
-      <DependentUpon>201811090930251_IntToDouble.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201811090958181_PrimaryKeyError.resx">
-      <DependentUpon>201811090958181_PrimaryKeyError.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201811091005191_setAutoIncrement.resx">
-      <DependentUpon>201811091005191_setAutoIncrement.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201811091011023_AnotherIncrementTry.resx">
-      <DependentUpon>201811091011023_AnotherIncrementTry.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\InitDatabase.resx">
+      <DependentUpon>InitDatabase.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

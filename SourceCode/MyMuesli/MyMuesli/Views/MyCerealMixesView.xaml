@@ -7,38 +7,42 @@
         mc:Ignorable="d"
         Title="MyCerealMixesView" Height="500" ResizeMode="NoResize" Width="500" WindowStartupLocation="CenterScreen"
         DataContext="{Binding MyCereal, Source={StaticResource ViewModelLocator}}">
-    <Grid Margin="10,10">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="125"/>
-            <RowDefinition/>
-            <RowDefinition Height="60"/>
-        </Grid.RowDefinitions>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="75"/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-            <Label Grid.Row="0" FontSize="50" VerticalAlignment="Center" FontFamily="Comic Sans MS"
-                   HorizontalAlignment="Center" Content="Just Muesli" />
-            <Label Grid.Row="1" FontSize="30" VerticalAlignment="Center" FontFamily="Comic Sans MS"
-                   HorizontalAlignment="Center" Content="My muesli mixes" />
-        </Grid>
-        <DataGrid Grid.Row="1" IsReadOnly="True" AutoGenerateColumns="False" SelectedItem="{Binding SelectedCereal}" AlternationCount="2" ItemsSource="{Binding MyCereals}">
-            <DataGrid.Columns>
-                <DataGridTextColumn FontSize="16" Header="Name" Binding="{Binding Name}" Width="175"/>
-                <DataGridTextColumn FontSize="16" Header="Price / 600g" Binding="{Binding Price}" Width="175"/>
-                <DataGridTextColumn FontSize="16" Header="Created on" Binding="{Binding CreatedOn}"/>
-            </DataGrid.Columns>
-        </DataGrid>
-        <Grid Grid.Row="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="200"/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <Button Height="40" Width="150" HorizontalAlignment="Left"  FontSize="16" Background="IndianRed" Content="Back to menu" Command="{Binding MenuCommand}" />
-            <Button Height="40" Grid.Column="1" HorizontalAlignment="Right" FontSize="16" Background="IndianRed" Command="{Binding EditCommand}" Width="125" Content="Edit"                    />
-            <Button Height="40" Grid.Column="2" HorizontalAlignment="Right"  FontSize="16" Background="IndianRed" Command="{Binding DeleteCommand}" Width="125" Content="Delete" />
-        </Grid>
+  <Grid Margin="10,10">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="125" />
+      <RowDefinition />
+      <RowDefinition Height="60" />
+    </Grid.RowDefinitions>
+    <Grid>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="75" />
+        <RowDefinition />
+      </Grid.RowDefinitions>
+      <Label Grid.Row="0" FontSize="50" VerticalAlignment="Center" FontFamily="Comic Sans MS"
+             HorizontalAlignment="Center" Content="Just Muesli" />
+      <Label Grid.Row="1" FontSize="30" VerticalAlignment="Center" FontFamily="Comic Sans MS"
+             HorizontalAlignment="Center" Content="My muesli mixes" />
     </Grid>
+    <DataGrid Grid.Row="1" IsReadOnly="True" AutoGenerateColumns="False" SelectedItem="{Binding SelectedCereal}"
+              AlternationCount="2" ItemsSource="{Binding MyCereals}">
+      <DataGrid.Columns>
+        <DataGridTextColumn FontSize="16" Header="Name" Binding="{Binding Name}" Width="175" />
+        <DataGridTextColumn FontSize="16" Header="Price / 600g" Binding="{Binding Price}" Width="175" />
+        <DataGridTextColumn FontSize="16" Header="Created on" Binding="{Binding CreatedOn}" />
+      </DataGrid.Columns>
+    </DataGrid>
+    <Grid Grid.Row="2">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="200" />
+        <ColumnDefinition />
+        <ColumnDefinition />
+      </Grid.ColumnDefinitions>
+      <Button Height="40" Width="150" HorizontalAlignment="Left" FontSize="16" Background="IndianRed"
+              Content="Back to menu" Command="{Binding MenuCommand}" />
+      <Button Height="40" Grid.Column="1" HorizontalAlignment="Right" FontSize="16" Background="IndianRed"
+              Command="{Binding EditCommand}" Width="125" Content="Edit" />
+      <Button Height="40" Grid.Column="2" HorizontalAlignment="Right" FontSize="16" Background="IndianRed"
+              Command="{Binding DeleteCommand}" Width="125" Content="Delete" />
+    </Grid>
+  </Grid>
 </Window>

@@ -8,18 +8,24 @@
         DataContext="{Binding Main, Source={StaticResource ViewModelLocator}}">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="150"/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition Height="150"/>
+            <RowDefinition Height="150" />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition Height="150" />
         </Grid.RowDefinitions>
-        <Label Grid.Row="0" FontSize="50" VerticalAlignment="Center" FontFamily="Comic Sans MS" HorizontalAlignment="Center" Content="Just Muesli"/>
-        <Button Grid.Row="1" Command="{Binding CustomerDetailsCommand}" Background="IndianRed" Height="30" Width="200" Content="Edit Customer Details"/>
-        <Button Grid.Row="2" Command="{Binding CerealMixerCommand}" Background="IndianRed"  IsEnabled="{Binding IsCustomerCreated}" Height="30" Width="200" Content="Muesli Mixer"/>
-        <Button Grid.Row="3" Command="{Binding MyCerealCommand}" Background="IndianRed" Height="30" Width="200" IsEnabled="{Binding IsMuesliCreated}" Content="My muesli mixes"/>
-        <Button Grid.Row="4" Command="{Binding OrderCommand}" Background="IndianRed" Height="30" Width="200" IsEnabled="{Binding IsMuesliCreated}" Content="OrderView"/>
-        <Button Grid.Row="5" Command="{Binding ExitCommand}" Background="IndianRed" Height="30" Width="200" Content="Exit"/>
+        <Label Grid.Row="0" FontSize="50" VerticalAlignment="Center" FontFamily="Comic Sans MS"
+               HorizontalAlignment="Center" Content="Just Muesli" />
+        <Button Grid.Row="1" Command="{Binding CustomerDetailsCommand}" Background="IndianRed" Height="30" Width="200"
+                Content="Edit Customer Details" />
+        <Button Grid.Row="2" Command="{Binding CerealMixerCommand}" Background="IndianRed"
+                IsEnabled="{Binding IsCustomerCreated}" Height="30" Width="200" Content="Muesli Mixer" />
+        <Button Grid.Row="3" Command="{Binding MyCerealCommand}" Background="IndianRed" Height="30" Width="200"
+                IsEnabled="{Binding IsMuesliCreated}" Content="My muesli mixes" />
+        <Button Grid.Row="4" Command="{Binding OrderCommand}" Background="IndianRed" Height="30" Width="200"
+                IsEnabled="{Binding IsMuesliCreated}" Content="OrderView" />
+        <Button Grid.Row="5" Command="{Binding ExitCommand}" Background="IndianRed" Height="30" Width="200"
+                Content="Exit" />
     </Grid>
 </Window>

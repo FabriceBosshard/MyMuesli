@@ -1,26 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reflection;
+using log4net;
 using MyMuesli.Model;
-using MyMuesli.ViewModel;
 
 namespace MyMuesli.Service
 {
     public class DatabaseService : IDatabaseService
     {
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()
+            .DeclaringType);
         public void AddUser(CustomerDetails customer)
         {
             using (var ctx = new MyCerealContext())
             {
-                customer.ID = Guid.NewGuid();
                 ctx.CustomerDetails.Add(customer);
                 ctx.SaveChanges();
             }
         }
-
         public ObservableCollection<Country> GetCountries()
         {
             using (var ctx = new MyCerealContext())
@@ -28,20 +26,45 @@ namespace MyMuesli.Service
                 return new ObservableCollection<Country>(ctx.Countries);
             }
         }
-
         public ObservableCollection<Cereal> GetMyCereals(CustomerDetails customer)
         {
             using (var ctx = new MyCerealContext())
             {
-                return new ObservableCollection<Cereal>(ctx.Cereals.Where(c => c.Customer.Equals(customer)));
+                IQueryable<Cereal> cereals;
+                try
+                {
+                    cereals = from cereal in ctx.Cereals
+                        join cust in ctx.CustomerDetails on cereal.Customer.CustomerDetailsId
+                            equals cust
+                            .CustomerDetailsId
+                        select cereal;
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    throw;
+                }
+                return new ObservableCollection<Cereal>(cereals.Where(c => c.Customer
+                    .Equals(customer)));
             }
         }
-
         public ObservableCollection<Ingredient> GetIngredients()
         {
             using (var ctx = new MyCerealContext())
             {
-                return new ObservableCollection<Ingredient>(ctx.Ingredients);
+                IQueryable<Ingredient> ingredients = null;
+                try
+                {
+                    ingredients = from ing in ctx.Ingredients
+                        join category in ctx.Categories on ing.Category.CategoryId
+                            equals category.CategoryId
+                        select ing;
+                }
+                catch (Exception e)
+                {
+                    Log.Error("GetIngredients failed: " + e.InnerException);
+                }
+                return new ObservableCollection<Ingredient>(ingredients);
             }
         }
 
@@ -57,9 +80,15 @@ namespace MyMuesli.Service
         {
             using (var ctx = new MyCerealContext())
             {
-                cereal.CerealId = Guid.NewGuid();
-                ctx.Cereals.Add(cereal);
-                ctx.SaveChanges();
+                try
+                {
+                    ctx.Cereals.Add(cereal);
+                    ctx.SaveChanges();
+                }
+                catch (Exception e)
+                {
+                    Log.Error("AddCereal failed: " + e.InnerException);
+                }
             }
         }
 
@@ -67,8 +96,15 @@ namespace MyMuesli.Service
         {
             using (var ctx = new MyCerealContext())
             {
-                ctx.Cereals.Remove(selectedCereal);
-                ctx.SaveChanges();
+                try
+                {
+                    ctx.Cereals.Remove(selectedCereal);
+                    ctx.SaveChanges();
+                }
+                catch (Exception e)
+                {
+                    Log.Error("DeleteMuesli failed: " + e.InnerException);
+                }
             }
         }
 
@@ -76,7 +112,20 @@ namespace MyMuesli.Service
         {
             using (var ctx = new MyCerealContext())
             {
-                return new ObservableCollection<Ingredient>(ctx.Ingredients.Where(i => i.Cereals.Contains(cereal)));
+                IQueryable<Ingredient> ingredients = null;
+                try
+                {
+                    ingredients = from ing in ctx.Ingredients
+                        join category in ctx.Categories on ing.Category.CategoryId
+                            equals category.CategoryId
+                        select ing;
+                }
+                catch (Exception e)
+                {
+                    Log.Error("GetIngredientList failed: " + e.InnerException);
+                }
+                return new ObservableCollection<Ingredient>(ingredients.Where(i => i
+                    .Cereals.Contains(cereal)));
             }
         }
 
@@ -84,12 +133,19 @@ namespace MyMuesli.Service
         {
             using (var ctx = new MyCerealContext())
             {
-                var old = ctx.Cereals.First(c => c.CerealId == cereal.CerealId);
-                old.Name = cereal.Name;
-                old.CreatedOn = cereal.CreatedOn;
-                old.Ingredients = cereal.Ingredients;
-                old.Price = cereal.Price;
-                ctx.SaveChanges();
+                try
+                {
+                    var old = ctx.Cereals.First(c => c.CerealId == cereal.CerealId);
+                    old.Name = cereal.Name;
+                    old.CreatedOn = cereal.CreatedOn;
+                    old.Ingredients = cereal.Ingredients;
+                    old.Price = cereal.Price;
+                    ctx.SaveChanges();
+                }
+                catch (Exception e)
+                {
+                    Log.Error("UpdateCereal failed: " + e.InnerException);
+                }
             }
         }
     }
